@@ -176,6 +176,9 @@ export const DAY_LINE = {
  * could become one. "Unticked isn't failed" is the whole design in a sentence.
  */
 export const MORNING_LIST = {
+  heading: "Morning list",
+  /** For screen readers. The placeholder vanishes as soon as you type. */
+  composeLabel: "What you intend to do today",
   composePlaceholder: "One thing per line. What you actually intend to do today.",
   makeListButton: "Make list",
   addTaskPlaceholder: "Add something",

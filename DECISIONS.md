@@ -331,3 +331,31 @@ for looking at it on the actual phone, which is Chunk 14.
 **No disclosure widget exists anywhere in the codebase.** Checked rather than
 asserted: zero occurrences of `<details>`, `<summary>`, `aria-expanded`,
 `role="tab"`, `role="dialog"` or "Modal" across all of src.
+
+## Chunk 11 — Morning list: composing
+
+**`tasks.ts` imports nothing from `days.ts` or `metrics.ts`, and never will.**
+The separation is structural rather than a matter of discipline: the list
+screen has no route to a score, so no future refactor can quietly make ticking
+a box worth something. There is no count function in that file and there is not
+going to be one.
+
+**Windows line endings are handled by the trim, not by a second split.**
+Splitting on "\n" leaves a carriage return at the end of every line — invisible
+in the text, visible in the layout. Trimming each line removes it. He is typing
+this on Windows, so it would have happened on the first real use.
+
+**"Make list" is disabled while the box is empty or only whitespace,** so it
+cannot produce a list of nothing. Blank lines within the text are dropped
+rather than becoming empty tasks, since typing a blank line to space things out
+is normal.
+
+**The list page carries none of the today screen's furniture.** No banner, no
+protocol, no numbers, no grid. Putting any of them there would start to imply
+the list feeds into them.
+
+**Rule 10, checked mechanically rather than remembered.** No `.length` is
+rendered anywhere on the list screen, there is no percent sign, no `<progress>`,
+no `toFixed`, no rounding, and no import of anything that can produce a score.
+`tasks.length === 0` is used to decide between the compose box and the list,
+which is a branch, not a number on screen.
