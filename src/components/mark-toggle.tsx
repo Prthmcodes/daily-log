@@ -5,6 +5,8 @@ import type { Mark } from "@/lib/copy";
 type Props = {
   mark: Mark;
   ticked: boolean;
+  /** True while another day is loading, so a tap cannot land on stale data. */
+  disabled: boolean;
   onToggle: () => void;
 };
 
@@ -19,12 +21,13 @@ type Props = {
  * The whole row is the target, and it comes to just over the 44px minimum for
  * something you tap with a thumb.
  */
-export function MarkToggle({ mark, ticked, onToggle }: Props) {
+export function MarkToggle({ mark, ticked, disabled, onToggle }: Props) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={ticked}
+      disabled={disabled}
       onClick={onToggle}
       className={`flex w-full min-h-[44px] items-start gap-3 rounded-[9px] border px-3 py-[11px] text-left focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent ${
         ticked

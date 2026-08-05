@@ -272,3 +272,37 @@ figures on screen.
 creates the row, which makes it a logged day scoring zero — so it changes the
 averages, and the panel has to hear about it. `DayLine` reports upwards through
 an `onSaved` callback.
+
+## Chunk 9 — Grid and navigation
+
+**Score classes are written out in full, never built at runtime.** Tailwind
+reads the source as plain text to decide which CSS to generate, so
+`bg-score-${score}` would produce no styles at all and the grid would render
+thirty transparent squares. The array of literal names in `day-grid.tsx` looks
+redundant and is not. Verified by grepping the built stylesheet for all six.
+
+**Ten columns on a phone, fifteen on anything wider.** Fifteen columns inside a
+390px screen works out at 18px cells, which is not something you can hit with a
+thumb. Ten gives about 31px. That is still short of the 44px in 6.5 — a
+thirty-day heatmap cannot be built from 44px targets on a phone without
+becoming a page in itself — so the grid is treated as the glanceable view and
+the prev/next arrows are the navigation that meets the size rule. Every cell
+carries an aria-label reading, for example, "Wednesday 5 August — 3/5".
+
+**The grid and the averages stay anchored to today; only the editing does not.**
+Walking back to last Tuesday changes which day the marks and the day line
+belong to, and nothing else. "Last 30 days" would be a strange thing to
+recalculate as you browsed.
+
+**`key={selectedKey}` on the day line.** The textarea reads its starting text
+once, when it is created. Without a changing key React would keep the same
+component alive as you moved between days and you would be typing Tuesday's
+note into Wednesday's box.
+
+**Moving to another day clears the marks and refuses taps until it loads.**
+Leaving the previous day's ticks on screen would mean a fast tap wrote them
+onto the wrong day.
+
+**The state moved into a `useToday` hook.** The screen component had reached
+270 lines. It is now 89 and contains only layout, while every rule about when a
+row may be written lives in one file that can be read end to end.
