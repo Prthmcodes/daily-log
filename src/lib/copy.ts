@@ -217,6 +217,11 @@ export const UI = {
 
   logZeroButton: "Log this day as 0",
 
+  loading: "Loading",
+  /** Stated flatly. A failed write is a network fact, not a personal failing. */
+  loadFailed: "Couldn't load this day. Refresh when you're back online.",
+  saveFailed: "That didn't save. Tap it again.",
+
   metricsHeading: "The numbers",
   sevenDayAverage: "7-day average",
   thirtyDayAverage: "30-day average",

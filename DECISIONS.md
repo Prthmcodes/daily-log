@@ -181,3 +181,37 @@ says so, instead of "try again in a moment" — which was wrong by about an hour
 and encouraged pressing the button again, making it worse. And a dead link now
 reports itself on `/auth/confirm`, where the link actually lands, rather than
 silently bouncing to a sign-in page that looks untouched.
+
+## Chunk 6 — Marks
+
+**The today screen decides its own date, in the browser.** `page.tsx` runs on
+the server and does only what the server can safely do: establish who you are.
+It deliberately does *not* fetch the day, because choosing which day means
+knowing what time it is where you are, and the server does not — on Vercel it
+thinks it is in UTC. At 23:30 in the UK in summer that is already tomorrow, so
+a server-computed date would file an evening's marks under the wrong day
+roughly every night for half the year. The cost is a brief "Loading" while the
+browser works out the date and fetches the row; that seemed a better trade than
+being wrong after 11pm.
+
+**`fetchDay` is a select and nothing else.** Opening the app, re-rendering, or
+looking at a different day cannot create a `days` row. The only function that
+writes one is `saveMarks`, and the only thing that calls it is a tap on a
+toggle. Proved over HTTP: five consecutive reads of an unlogged day left the
+table empty.
+
+**The upsert names only the columns it sets,** so writing marks leaves an
+existing `note` alone. Also proved rather than assumed.
+
+**`scoreOf` duplicates a calculation the database already does.** The generated
+column is the copy that counts; this one exists so the number on screen can
+change the instant you tap. A test checks the two agree for all 32 possible
+combinations, because a disagreement would put a different number on the screen
+than in the averages.
+
+**Marks are `<button role="switch">`, not styled divs.** The prototype used
+divs with click handlers, which cannot be reached from a keyboard and announce
+nothing to a screen reader.
+
+**`middleware.ts` became `proxy.ts`.** Next.js 16 renamed the convention and
+warned about it on every start. Renamed rather than left to break later.
