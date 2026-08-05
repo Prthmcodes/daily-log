@@ -1,6 +1,43 @@
 import { describe, expect, it } from "vitest";
 
-import { splitIntoTasks } from "./tasks";
+import type { TaskRow } from "./supabase/types";
+import { nextPosition, splitIntoTasks } from "./tasks";
+
+/** A task as the database would hand it back. */
+function task(position: number, done = false): TaskRow {
+  return {
+    id: `id-${position}`,
+    user_id: "11111111-1111-4111-8111-111111111111",
+    date: "2026-08-05",
+    text: `task ${position}`,
+    done,
+    position,
+    created_at: "2026-08-05T08:00:00Z",
+    updated_at: "2026-08-05T08:00:00Z",
+  };
+}
+
+describe("nextPosition", () => {
+  it("starts at zero for an empty list", () => {
+    expect(nextPosition([])).toBe(0);
+  });
+
+  it("goes after everything already there", () => {
+    expect(nextPosition([task(0), task(1), task(2)])).toBe(3);
+  });
+
+  it("goes to the bottom even when the numbering has gaps", () => {
+    // Deleting a task leaves a hole. Something added afterwards must still
+    // land at the end, not back in the hole.
+    expect(nextPosition([task(0), task(3), task(7)])).toBe(8);
+  });
+
+  it("does not care whether anything is done", () => {
+    // Position is order, not progress. A list of finished tasks still puts
+    // the next one at the bottom.
+    expect(nextPosition([task(0, true), task(1, true)])).toBe(2);
+  });
+});
 
 describe("splitIntoTasks", () => {
   it("makes one task per line, in the order written", () => {

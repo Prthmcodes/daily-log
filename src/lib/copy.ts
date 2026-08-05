@@ -182,6 +182,7 @@ export const MORNING_LIST = {
   composePlaceholder: "One thing per line. What you actually intend to do today.",
   makeListButton: "Make list",
   addTaskPlaceholder: "Add something",
+  addTaskButton: "Add",
   standingLine: "Unticked isn't failed. Some days the list was wrong, not you.",
   emptyState:
     "Nothing written yet. Write it when you're ready — an empty list isn't a failure.",

@@ -359,3 +359,40 @@ rendered anywhere on the list screen, there is no percent sign, no `<progress>`,
 no `toFixed`, no rounding, and no import of anything that can produce a score.
 `tasks.length === 0` is used to decide between the compose box and the list,
 which is a branch, not a number on screen.
+
+## Chunk 12 — Morning list: ticking
+
+**The tick is muted grey, not green.** Spec 6.6 rules out a green tick on the
+list explicitly, and the first version of the row had one. Green would make
+finishing a task an achievement, and the moment a tick is worth something an
+untick starts being worth something too. The daily marks on the today screen
+keep their green; the list does not get it.
+
+**The selected day lives in `?date=`, and both screens read it.** That is what
+makes the link between them arrive on the day you were already on. Today has no
+parameter at all, so the everyday URL stays clean. The address bar is also a
+way into the future, so `parseDateParam` refuses anything later than today, as
+well as anything that is not a real calendar day — and it falls back to today
+rather than showing an error, because a mistyped URL is not an emergency.
+
+**`history.replaceState` rather than the router.** Changing the URL through
+Next's router would ask the server to re-render on every tap of an arrow.
+This keeps stepping through days instant while leaving a URL that is correct if
+you refresh or follow the link across.
+
+**Moving day fetches in the handler, not in an effect watching the date.** An
+effect would also fire on mount and load the same day twice.
+
+**Delete leaves a gap in the position numbering, and that is fine.** `position`
+decides order, it is not a count of anything. `nextPosition` takes one past the
+highest in use, so something added at three in the afternoon lands at the
+bottom even after deletions.
+
+**Editing a task's text is not supported.** Delete it and type it again.
+Retyping is a fresh decision, which is the same reason yesterday's unticked
+tasks do not carry over.
+
+**Rule 10 re-checked mechanically across all seven list files:** no count
+rendered, no percent sign, no `<progress>`, no rounding, no import of anything
+that can produce a score, and no colour anywhere that responds to how much is
+done.

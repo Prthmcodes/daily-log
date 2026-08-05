@@ -5,6 +5,7 @@ import { DayGrid } from "@/components/day-grid";
 import { DayLine } from "@/components/day-line";
 import { MarksCard } from "@/components/marks-card";
 import { MetricsPanel } from "@/components/metrics-panel";
+import { ScreenNav } from "@/components/screen-nav";
 import { UI } from "@/lib/copy";
 import { averageWithin, formatAverage } from "@/lib/metrics";
 import { useToday } from "@/lib/use-today";
@@ -33,6 +34,12 @@ export function TodayScreen({ userId }: Props) {
 
   return (
     <>
+      <ScreenNav
+        current="today"
+        selectedKey={day.selectedKey}
+        todayK={day.todayK}
+      />
+
       <section className="rounded-[var(--radius-card)] border border-line bg-card px-5 py-[18px]">
         <DateBar
           selectedKey={day.selectedKey}

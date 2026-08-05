@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import type { MarkKey } from "@/lib/copy";
 import { lastNKeys, todayKey, type DateKey } from "@/lib/date";
+import { readDateFromUrl, writeDateToUrl } from "@/lib/query-date";
 import {
   NO_MARKS,
   countLoggedDays,
@@ -85,8 +86,11 @@ export function useToday(userId: string) {
         setLoggedDays(days);
         setTotalLogged(total);
         setTodayK(key);
+        // A `?date=` in the address bar wins, as long as it is a real day and
+        // not in the future — which is what makes the link from the list
+        // screen arrive on the day you were already looking at.
         // Setting this starts the effect below, which loads the day itself.
-        setSelectedKey(key);
+        setSelectedKey(readDateFromUrl(key) ?? key);
       } catch {
         setLoadFailed(true);
       }
@@ -136,7 +140,7 @@ export function useToday(userId: string) {
   }
 
   function select(key: DateKey) {
-    if (key === selectedKey) return;
+    if (!todayK || key === selectedKey) return;
 
     // Clear the marks rather than leaving the previous day's on screen while
     // the new one loads, and refuse taps until they arrive.
@@ -144,6 +148,9 @@ export function useToday(userId: string) {
     setMarks(NO_MARKS);
     setSaveFailed(false);
     setSelectedKey(key);
+    // Keep the address bar honest, so a refresh or a jump to the list screen
+    // stays on this day.
+    writeDateToUrl(key, todayK);
   }
 
   async function toggle(key: MarkKey) {
