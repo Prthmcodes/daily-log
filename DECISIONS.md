@@ -420,3 +420,20 @@ cleanup.
 Also: the error is now read from the query string as well as the fragment.
 Supabase puts it in either depending on the flow, and the observed failure had
 it in the query string.
+
+### Sign-in uses `token_hash` links, not PKCE codes
+
+PKCE completes only in the browser that requested the link, because the
+`code_verifier` is held in a cookie there. That fails for the ordinary case of
+asking for a link on a laptop and opening it on a phone — and it failed here
+against VS Code's built-in browser versus Chrome. The database showed it
+plainly: five `auth.flow_state` rows with `code_challenge_method: s256`, codes
+issued, and zero sessions.
+
+The email templates now send `?token_hash=...&type=...`, which carries
+everything the exchange needs and works in any browser on any device. The
+confirm page already handled that shape. `{{ .RedirectTo }}` is used rather
+than `{{ .SiteURL }}` so the same template serves localhost and production.
+
+Written down in docs/supabase-setup.md, because it is a dashboard setting that
+nothing in this repository can enforce or even notice if it changes.
