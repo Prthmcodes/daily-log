@@ -46,3 +46,30 @@ was removed. Dark mode is explicitly out of scope.
 **System sans-serif, not a web font.** The starter pulls Geist from Google
 Fonts. Removed — it costs a network round trip on a phone for a look the spec
 doesn't ask for.
+
+## Chunk 2 — Date logic
+
+**Keys are parsed at midday, never midnight.** `fromDateKey` builds
+`"2026-03-29T12:00:00"`. On a clocks-forward morning, midnight either does not
+exist or shifts by an hour, and a date sitting on midnight can be dragged into
+the previous day. Midday has twelve hours of clearance either side.
+
+**`"YYYY-MM-DD"` is compared as a plain string.** The format is fixed-width,
+zero-padded, and ordered largest unit first, so alphabetical order and
+chronological order are the same order. `isAfter` therefore does no parsing and
+touches no timezone.
+
+**`isValidDateKey` round-trips the date rather than trusting the parser.**
+JavaScript accepts `"2026-02-30"` and silently returns 2 March instead of
+failing. Building the date and checking it still formats back to the same key
+is the only reliable test. Verified in the suite.
+
+**`formatDayLabel` pins the locale to en-GB.** Left to the browser it would
+vary by machine and could not be tested. en-GB renders "Wednesday 5 August" —
+no comma. That is the format, not an oversight.
+
+**`vitest.config.mts`, not `.ts`.** Vite loads a `.ts` config as CommonJS and
+warns on every run, because `package.json` has no `"type": "module"`. The
+`.mts` extension marks it as ESM and the warning goes away. Adding
+`"type": "module"` instead would have changed how Next.js reads its own config
+files, which was not worth it.
