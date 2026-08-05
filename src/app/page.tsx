@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { Protocol } from "@/components/protocol";
@@ -40,14 +41,23 @@ export default async function TodayPage() {
 
       <Protocol />
 
-      <form action="/auth/sign-out" method="post" className="mt-6">
-        <button
-          type="submit"
-          className="min-h-11 rounded-[var(--radius-control)] border border-control bg-card px-4 text-[13px] text-muted hover:bg-hover"
+      <div className="mt-6 flex items-center gap-4">
+        <Link
+          href="/account"
+          className="inline-flex min-h-11 items-center text-[13px] text-muted hover:text-ink"
         >
-          {UI.signOut}
-        </button>
-      </form>
+          {UI.accountLink}
+        </Link>
+
+        <form action="/auth/sign-out" method="post">
+          <button
+            type="submit"
+            className="min-h-11 rounded-[var(--radius-control)] border border-control bg-card px-4 text-[13px] text-muted hover:bg-hover"
+          >
+            {UI.signOut}
+          </button>
+        </form>
+      </div>
     </main>
   );
 }

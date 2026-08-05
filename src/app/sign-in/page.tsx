@@ -9,13 +9,26 @@ import { createClient } from "@/lib/supabase/client";
  * "use client" at the top of the file marks this as a component that runs in
  * the browser. It has to, because it holds state and responds to typing —
  * things that only exist once a page is live in front of someone.
+ *
+ * There are two ways in. A password is the everyday one: instant, works on any
+ * device, and not subject to the mailer's two-emails-an-hour limit. The
+ * emailed link is the fallback for a device where the password is not to hand,
+ * and the only way in before a password has been set.
  */
 
-/** What the form is currently doing. Clearer than four separate booleans. */
-type Status = "idle" | "sending" | "sent" | "failed" | "rateLimited";
+/** What the form is currently doing. Clearer than five separate booleans. */
+type Status =
+  | "idle"
+  | "signingIn"
+  | "wrongDetails"
+  | "sending"
+  | "sent"
+  | "failed"
+  | "rateLimited";
 
 /** The message that goes with each resting state, or nothing while idle. */
 const MESSAGES: Partial<Record<Status, string>> = {
+  wrongDetails: AUTH.wrongDetails,
   sent: AUTH.sent,
   failed: AUTH.failed,
   rateLimited: AUTH.rateLimited,
@@ -25,15 +38,35 @@ export default function SignInPage() {
   // useState gives you a value and a function to change it. Calling the
   // setter re-renders the component with the new value.
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [status, setStatus] = useState<Status>("idle");
 
-  // A dead link is reported on /auth/confirm, which is where the link lands,
-  // so there is nothing to handle here.
+  const busy = status === "signingIn" || status === "sending";
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSignIn(event: React.FormEvent<HTMLFormElement>) {
     // Without this the browser reloads the page on submit, the old-fashioned
     // way, and everything above is thrown away.
     event.preventDefault();
+    setStatus("signingIn");
+
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setStatus("wrongDetails");
+      return;
+    }
+
+    // A full page load rather than a client-side route change, so the request
+    // carries the newly written cookies and the server sees the session.
+    window.location.replace("/");
+  }
+
+  async function handleSendLink() {
+    if (!email) return;
     setStatus("sending");
 
     const supabase = createClient();
@@ -65,11 +98,10 @@ export default function SignInPage() {
       </h1>
       <p className="mt-1 mb-6 text-[13px] text-muted">{AUTH.intro}</p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSignIn}>
         <label htmlFor="email" className="block text-[13px] text-muted">
           {AUTH.emailLabel}
         </label>
-
         <input
           id="email"
           type="email"
@@ -80,26 +112,52 @@ export default function SignInPage() {
           // React calls this a "controlled input": the state is the truth,
           // and the box on screen just displays it.
           onChange={(event) => setEmail(event.target.value)}
-          className="mt-1 min-h-[44px] w-full rounded-[var(--radius-control)] border border-field-line bg-field px-3 text-[15px] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
+          className="mt-1 min-h-11 w-full rounded-[var(--radius-control)] border border-field-line bg-field px-3 text-[15px] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
+        />
+
+        <label htmlFor="password" className="mt-3 block text-[13px] text-muted">
+          {AUTH.passwordLabel}
+        </label>
+        <input
+          id="password"
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          className="mt-1 min-h-11 w-full rounded-[var(--radius-control)] border border-field-line bg-field px-3 text-[15px] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
         />
 
         <button
           type="submit"
-          disabled={status === "sending"}
-          className="mt-3 min-h-[44px] w-full rounded-[var(--radius-control)] border border-control bg-card px-3 text-[14px] text-ink hover:bg-hover disabled:opacity-40"
+          disabled={busy || password.length === 0}
+          className="mt-4 min-h-11 w-full rounded-[var(--radius-control)] border border-control bg-card px-3 text-[14px] text-ink hover:bg-hover disabled:opacity-40 disabled:hover:bg-card"
         >
-          {status === "sending" ? AUTH.sendingButton : AUTH.sendButton}
+          {status === "signingIn" ? AUTH.signingInButton : AUTH.signInButton}
         </button>
       </form>
 
+      {/* type="button" so it does not submit the form it sits under. */}
+      <button
+        type="button"
+        onClick={handleSendLink}
+        disabled={busy || email.length === 0}
+        className="mt-3 min-h-11 w-full rounded-[var(--radius-control)] px-3 text-[13px] text-muted hover:bg-hover disabled:opacity-40 disabled:hover:bg-transparent"
+      >
+        {status === "sending" ? AUTH.sendingButton : AUTH.useLinkInstead}
+      </button>
+
       {/*
         `&&` renders the right-hand side only when the left is true. It is the
-        usual way to show something conditionally in JSX. `MESSAGES[status]`
-        is undefined while idle or sending, so nothing shows.
+        usual way to show something conditionally in JSX. MESSAGES[status] is
+        undefined while idle or working, so nothing shows.
       */}
       {MESSAGES[status] && (
-        <p className="mt-4 text-[13px] text-muted">{MESSAGES[status]}</p>
+        <p aria-live="polite" className="mt-4 text-[13px] text-muted">
+          {MESSAGES[status]}
+        </p>
       )}
+
+      <p className="mt-6 text-[11.5px] text-muted">{AUTH.noPasswordYet}</p>
     </main>
   );
 }

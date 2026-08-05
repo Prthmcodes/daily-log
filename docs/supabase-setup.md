@@ -4,40 +4,25 @@ Two things live in the Supabase dashboard rather than in this repo, and both
 will silently break sign-in if they are wrong. Project: **daily-log**
 (`oqisbcdzykcmunflemho`, eu-west-2).
 
-## 1. Email templates — use `token_hash`, not the default link
+## 1. Email links only complete in the browser that asked for one
 
-**Why.** The default template sends a PKCE link. Completing a PKCE sign-in
-needs a `code_verifier` cookie that only exists in the browser that *asked*
-for the link, so the link fails if you open it anywhere else — a different
-browser, or your phone after requesting it on your laptop. A `token_hash`
-link carries everything it needs and works anywhere.
+The emailed link uses PKCE, which needs a `code_verifier` cookie held by the
+browser that requested it. Open the link somewhere else — a different browser,
+or your phone after asking on your laptop — and it fails with "Email link is
+invalid or has expired", which is misleading but is what Supabase returns.
 
-Go to **Authentication → Emails → Templates**.
+**Two things were considered and are not available:**
 
-### Magic Link
+- *Changing the email template to a `token_hash` link*, which would work
+  anywhere. The dashboard refuses to edit templates without custom SMTP
+  configured: "Set up custom SMTP to edit templates".
+- *Switching the client to implicit flow.* `@supabase/ssr` hardcodes
+  `flowType: "pkce"` after spreading your options, so it cannot be overridden.
 
-Used every time you sign in after the first.
-
-```html
-<h2>Sign in to Daily Log</h2>
-<p><a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=magiclink">Sign in</a></p>
-<p>If you did not ask for this, ignore it.</p>
-```
-
-### Confirm signup
-
-Used only for the very first sign-in on a new account. Same thing with
-`type=signup`.
-
-```html
-<h2>Sign in to Daily Log</h2>
-<p><a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup">Sign in</a></p>
-```
-
-`{{ .RedirectTo }}` is whatever the app asked for — which is
-`<wherever it is running>/auth/confirm`. Using it rather than `{{ .SiteURL }}`
-means the same template works from localhost and from the deployed site
-without being edited again.
+**So sign-in uses a password instead**, set under Account once you are in.
+Email links remain as the fallback and the way in on a new account. If the two
+emails an hour ever becomes a nuisance, configuring SMTP removes the cap and
+unlocks the templates at the same time.
 
 ## 2. URL configuration
 

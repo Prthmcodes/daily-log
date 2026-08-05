@@ -202,8 +202,14 @@ export const MORNING_LIST = {
  * an app about not moralising at yourself should not start by nagging you.
  */
 export const AUTH = {
-  intro: "Sign in with a link sent to your email.",
+  intro: "Sign in with your password, or have a link emailed to you.",
   emailLabel: "Email",
+  passwordLabel: "Password",
+  signInButton: "Sign in",
+  signingInButton: "Signing in",
+  wrongDetails: "That email and password didn't match.",
+  useLinkInstead: "Email me a link instead",
+  noPasswordYet: "No password yet? Use a link, then set one under Account.",
   sendButton: "Send me a link",
   sendingButton: "Sending",
   sent: "Check your email. The link signs you in on this device.",
@@ -253,4 +259,28 @@ export const UI = {
   todayScreenLink: "Today",
   listScreenLink: "List",
   signOut: "Sign out",
+  accountLink: "Account",
+} as const;
+
+/**
+ * Setting a password.
+ *
+ * Not in the original brief, which specified magic links only. Added because
+ * the free mailer allows about two emails an hour and a link only completes in
+ * the browser that asked for it — which makes "open the app" an unreliable
+ * first step, and an unreliable first step is how a daily habit stops being
+ * daily.
+ */
+export const ACCOUNT = {
+  heading: "Account",
+  signedInAs: "Signed in as",
+  passwordLabel: "New password",
+  passwordHint:
+    "At least eight characters. Once it is set you can sign in without waiting for an email.",
+  saveButton: "Save password",
+  saving: "Saving",
+  saved: "Password saved. You can use it to sign in from now on.",
+  tooShort: "A bit short — eight characters or more.",
+  failed: "That didn't save. Try again in a moment.",
+  backLink: "Back to today",
 } as const;

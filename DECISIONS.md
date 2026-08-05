@@ -437,3 +437,33 @@ than `{{ .SiteURL }}` so the same template serves localhost and production.
 
 Written down in docs/supabase-setup.md, because it is a dashboard setting that
 nothing in this repository can enforce or even notice if it changes.
+
+### Password sign-in added; magic links kept as the fallback
+
+The brief specified magic links only. That turned out to be a poor everyday
+mechanism here, for two reasons that only appeared on contact with the real
+service:
+
+- The free mailer allows about **two emails an hour**, and a failed sign-in
+  attempt costs one.
+- A magic link completes **only in the browser that asked for it**, because
+  PKCE keeps the verifier in a cookie there. Requesting on a laptop and opening
+  on a phone cannot work.
+
+Both fixes were investigated and neither was available. Editing the email
+template to a `token_hash` link requires custom SMTP — the dashboard says so
+plainly. Switching to implicit flow is impossible because `@supabase/ssr` sets
+`flowType: "pkce"` *after* spreading the caller's options, so it cannot be
+overridden.
+
+So the sign-in screen now takes a password, with "Email me a link instead"
+kept underneath — the link is still the only way in on a brand-new account, and
+the fallback on a device where the password is not to hand. A password is set
+under **Account**, which is reachable only when already signed in, so it is a
+change of credentials rather than a way to obtain one.
+
+Verified against the live service: sign in with a password (200), wrong
+password (400 `invalid_credentials`), `updateUser({ password })` (200), sign in
+with the new one (200), old one refused (400), and a three-character password
+rejected upstream (422 `weak_password`) — so the form's eight-character rule is
+stricter than the server's, not a substitute for it.
