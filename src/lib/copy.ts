@@ -199,6 +199,12 @@ export const AUTH = {
   sendingButton: "Sending",
   sent: "Check your email. The link signs you in on this device.",
   failed: "That didn't send. Try again in a moment.",
+  /** A 429 from Supabase. "In a moment" would be a lie — it is an hour. */
+  rateLimited:
+    "Too many sign-in emails just now. The free plan allows a couple an hour, so give it a while before trying again.",
+  /** A link that has already been used, or that has timed out. */
+  linkExpired: "That link had already been used. Send yourself a fresh one.",
+  signingIn: "Signing you in",
 } as const;
 
 export const UI = {

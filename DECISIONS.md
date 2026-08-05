@@ -162,3 +162,22 @@ error screen — a dead link is a mildly annoying fact, not a failure.
 **Sign-out is a POST.** Browsers and mail clients pre-fetch GET links, which
 would sign you out without you touching anything. It redirects with 303 so the
 browser follows up with a GET instead of repeating the POST.
+
+### Chunk 5 fix — the sign-in link landed on a server route it could not read
+
+The first version of `/auth/confirm` was a server route handler. Supabase was
+completing sign-in through the implicit flow, which returns the tokens in the
+URL *fragment* — `#access_token=...` — and a fragment is never sent to the
+server. The route therefore saw an empty request, concluded the link was dead,
+and redirected to sign-in, discarding a session that had in fact been created.
+The auth log showed `"action":"login","login_method":"implicit"` at the exact
+moment the app claimed the link had failed.
+
+It is now a **client** page, because only the browser can see all three shapes
+a Supabase sign-in can arrive in: a fragment, `?code=`, or `?token_hash=`.
+
+Two related fixes went in at the same time. A 429 from the email rate limit now
+says so, instead of "try again in a moment" — which was wrong by about an hour
+and encouraged pressing the button again, making it worse. And a dead link now
+reports itself on `/auth/confirm`, where the link actually lands, rather than
+silently bouncing to a sign-in page that looks untouched.

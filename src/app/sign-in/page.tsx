@@ -11,14 +11,24 @@ import { createClient } from "@/lib/supabase/client";
  * things that only exist once a page is live in front of someone.
  */
 
-/** What the form is currently doing. Clearer than three separate booleans. */
-type Status = "idle" | "sending" | "sent" | "failed";
+/** What the form is currently doing. Clearer than four separate booleans. */
+type Status = "idle" | "sending" | "sent" | "failed" | "rateLimited";
+
+/** The message that goes with each resting state, or nothing while idle. */
+const MESSAGES: Partial<Record<Status, string>> = {
+  sent: AUTH.sent,
+  failed: AUTH.failed,
+  rateLimited: AUTH.rateLimited,
+};
 
 export default function SignInPage() {
   // useState gives you a value and a function to change it. Calling the
   // setter re-renders the component with the new value.
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+
+  // A dead link is reported on /auth/confirm, which is where the link lands,
+  // so there is nothing to handle here.
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     // Without this the browser reloads the page on submit, the old-fashioned
@@ -37,7 +47,15 @@ export default function SignInPage() {
       },
     });
 
-    setStatus(error ? "failed" : "sent");
+    if (!error) {
+      setStatus("sent");
+    } else if (error.status === 429) {
+      // Worth its own message: the generic "try again in a moment" is wrong
+      // by roughly an hour, and sends you into pressing the button repeatedly.
+      setStatus("rateLimited");
+    } else {
+      setStatus("failed");
+    }
   }
 
   return (
@@ -76,14 +94,11 @@ export default function SignInPage() {
 
       {/*
         `&&` renders the right-hand side only when the left is true. It is the
-        usual way to show something conditionally in JSX.
+        usual way to show something conditionally in JSX. `MESSAGES[status]`
+        is undefined while idle or sending, so nothing shows.
       */}
-      {status === "sent" && (
-        <p className="mt-4 text-[13px] text-muted">{AUTH.sent}</p>
-      )}
-
-      {status === "failed" && (
-        <p className="mt-4 text-[13px] text-muted">{AUTH.failed}</p>
+      {MESSAGES[status] && (
+        <p className="mt-4 text-[13px] text-muted">{MESSAGES[status]}</p>
       )}
     </main>
   );
