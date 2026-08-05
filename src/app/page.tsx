@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 
+import { Protocol } from "@/components/protocol";
+import { ReframeBanner } from "@/components/reframe-banner";
 import { TodayScreen } from "@/components/today-screen";
 import { UI } from "@/lib/copy";
 import { createClient } from "@/lib/supabase/server";
@@ -8,9 +10,10 @@ import { createClient } from "@/lib/supabase/server";
  * The today screen.
  *
  * This part runs on the server, and does only what the server can safely do:
- * establish who you are. It deliberately does not fetch the day, because
- * choosing *which* day means knowing what time it is where you are, and the
- * server does not. That decision belongs to the browser — see TodayScreen.
+ * establish who you are, and put the fixed text on the page. It deliberately
+ * does not fetch the day, because choosing *which* day means knowing what time
+ * it is where you are, and the server does not. That belongs to the browser —
+ * see the useToday hook.
  */
 export default async function TodayPage() {
   const supabase = await createClient();
@@ -30,12 +33,17 @@ export default async function TodayPage() {
       </h1>
       <p className="mb-[22px] text-[13px] text-muted">{UI.subtitle}</p>
 
+      {/* Above the marks, so it is read before the day is scored. */}
+      <ReframeBanner />
+
       <TodayScreen userId={user.id} />
+
+      <Protocol />
 
       <form action="/auth/sign-out" method="post" className="mt-6">
         <button
           type="submit"
-          className="min-h-[44px] rounded-[var(--radius-control)] border border-control bg-card px-4 text-[13px] text-muted hover:bg-hover"
+          className="min-h-11 rounded-[var(--radius-control)] border border-control bg-card px-4 text-[13px] text-muted hover:bg-hover"
         >
           {UI.signOut}
         </button>

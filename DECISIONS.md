@@ -306,3 +306,28 @@ onto the wrong day.
 **The state moved into a `useToday` hook.** The screen component had reached
 270 lines. It is now 89 and contains only layout, while every rule about when a
 row may be written lives in one file that can be read end to end.
+
+## Chunk 10 — Banner and protocol
+
+**Both are server components.** Neither ever changes, so neither carries a
+"use client" line, and both are in the HTML before any JavaScript loads. The
+most important sentence in the app should not be waiting on a network request.
+
+**The banner sits above the marks; the protocol sits below the grid.** Per the
+Chunk 0 ruling. The banner has to be *seen* on opening — it is what stops a
+slip before noon turning into a written-off day. The protocol has to be
+*there*, reachable without opening anything, but it runs to roughly 250 words
+and a screen that makes you read 250 words before ticking a box is a screen you
+stop opening.
+
+**Height budget for the banner, calculated rather than eyeballed.** At a 390px
+viewport the banner has 314px of content width; at 14px system sans that is
+43–46 characters a line, so the sentence wraps to four lines whichever
+character-width estimate is used, giving a 115px banner whose bottom edge sits
+225px down the page. The smallest phone worth worrying about leaves about 560px
+of usable height, so it clears the fold with room to spare. Not a substitute
+for looking at it on the actual phone, which is Chunk 14.
+
+**No disclosure widget exists anywhere in the codebase.** Checked rather than
+asserted: zero occurrences of `<details>`, `<summary>`, `aria-expanded`,
+`role="tab"`, `role="dialog"` or "Modal" across all of src.
