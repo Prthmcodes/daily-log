@@ -188,6 +188,19 @@ export const MORNING_LIST = {
  * and button labels are strings the user reads.
  * ------------------------------------------------------------------ */
 
+/**
+ * Signing in. Kept in the same flat, unhurried register as everything else —
+ * an app about not moralising at yourself should not start by nagging you.
+ */
+export const AUTH = {
+  intro: "Sign in with a link sent to your email.",
+  emailLabel: "Email",
+  sendButton: "Send me a link",
+  sendingButton: "Sending",
+  sent: "Check your email. The link signs you in on this device.",
+  failed: "That didn't send. Try again in a moment.",
+} as const;
+
 export const UI = {
   appTitle: "Daily Log",
   subtitle: "No streaks. No pass/fail. Each day is scored on its own.",

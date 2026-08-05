@@ -133,3 +133,32 @@ here uses. `src/lib/supabase/types.ts` has plain aliases instead.
 
 **`.env.example` is committed; `.env.local` is not.** The `.gitignore` rule
 `.env*` was swallowing both, so there is now an explicit `!.env.example`.
+
+## Chunk 5 — Auth
+
+**`getUser()`, never `getSession()`.** `getSession()` reads the cookie and
+believes it. `getUser()` re-checks the token with Supabase. The first is faster
+and forgeable; on a page that decides whether you are allowed in, that trade is
+the wrong way round.
+
+**The middleware is the only place allowed to write auth cookies.** Next.js
+throws if you set a cookie while rendering a page, so the server client
+swallows that specific failure. That is the one empty `catch` in this project
+and it carries a comment explaining why it is correct: the middleware has
+already refreshed the session earlier in the same request.
+
+**Route protection lives in middleware, not in each page.** A page that forgets
+to check is a page that leaks. The middleware denies by default and names the
+handful of public paths. `page.tsx` still re-checks and redirects — belt and
+braces, and it lets the rest of the file assume a user exists.
+
+**`/auth/confirm` accepts both link shapes.** Supabase sends either a
+`token_hash` (from the recommended email template, works on any device) or a
+`code` (from the default template, same browser only). Handling both means the
+app does not silently depend on a dashboard setting being right. An expired or
+already-used link redirects quietly back to sign-in rather than showing an
+error screen — a dead link is a mildly annoying fact, not a failure.
+
+**Sign-out is a POST.** Browsers and mail clients pre-fetch GET links, which
+would sign you out without you touching anything. It redirects with 303 so the
+browser follows up with a GET instead of repeating the POST.
