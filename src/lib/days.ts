@@ -28,6 +28,15 @@ export const NO_MARKS: Marks = {
 
 type Client = SupabaseClient<Database>;
 
+/**
+ * A day that exists in the table, reduced to the two things the metrics need.
+ * If it is in a list of these, it was logged.
+ */
+export type LoggedDay = {
+  date: DateKey;
+  score: number;
+};
+
 /** Pull just the five booleans out of a row, or all-false if there is no row. */
 export function marksOf(row: DayRow | null): Marks {
   if (!row) return NO_MARKS;
@@ -80,6 +89,50 @@ export async function fetchDay(
 
   if (error) throw error;
   return data;
+}
+
+/**
+ * Every logged day between two keys, inclusive.
+ *
+ * Days with no row simply are not in the result. That absence is the whole
+ * point: the averages are taken over what comes back from here, so a day you
+ * never opened cannot drag anything down.
+ */
+export async function fetchLoggedDays(
+  client: Client,
+  fromKey: DateKey,
+  toKey: DateKey,
+): Promise<LoggedDay[]> {
+  const { data, error } = await client
+    .from("days")
+    .select("date, score")
+    .gte("date", fromKey)
+    .lte("date", toKey);
+
+  if (error) throw error;
+
+  // `score` is a generated column, so the database reports it as nullable even
+  // though it always has a value. `?? 0` satisfies the types honestly.
+  return (data ?? []).map((row) => ({
+    date: row.date,
+    score: row.score ?? 0,
+  }));
+}
+
+/**
+ * How many days have ever been logged.
+ *
+ * All-time rather than windowed, carried over from the prototype. `head: true`
+ * asks for the count without the rows, so this stays cheap however long the
+ * habit lasts.
+ */
+export async function countLoggedDays(client: Client): Promise<number> {
+  const { count, error } = await client
+    .from("days")
+    .select("*", { count: "exact", head: true });
+
+  if (error) throw error;
+  return count ?? 0;
 }
 
 /**

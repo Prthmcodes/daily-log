@@ -242,3 +242,33 @@ debounce fires while there is text, which creates the row; clearing the text
 afterwards saves an empty note but the row remains. That is correct — you did
 deliberately write something — and it is the same outcome as pressing "Log this
 day as 0".
+
+## Chunk 8 — Metrics and zero
+
+**An average over logged days only, and null when there are none.** Not zero —
+"nothing to average yet" and "averaged zero" are different things and only one
+of them is a score. `formatAverage` turns null into the en dash and a real zero
+into "0.0", so the two can never look alike.
+
+**"Log this day as 0" writes a row with five false marks. That is all it is.**
+There is no `logged_zero` column and no separate state, because a deliberately
+zeroed day and a day you ticked nothing on are the same thing. The only
+difference between either of those and a day you never opened is whether the
+row exists. The button hides once a row exists, since there is then nothing
+left for it to do.
+
+**The metrics refetch after a write rather than being updated in place.** It
+costs one extra round trip roughly half a second after you tap, and it removes
+a whole class of bug where the local copy of the numbers drifts from the
+database. The tap itself stays optimistic, which is the part you actually
+watch.
+
+**A failed metrics refresh says so instead of being swallowed.** The write it
+follows has already succeeded, so reverting would be wrong and an error would
+be misleading. It shows "Numbers may be out of date." and leaves the old
+figures on screen.
+
+**Writing a note refreshes the metrics too.** A note on an untouched day
+creates the row, which makes it a logged day scoring zero — so it changes the
+averages, and the panel has to hear about it. `DayLine` reports upwards through
+an `onSaved` callback.

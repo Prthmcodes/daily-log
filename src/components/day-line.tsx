@@ -30,9 +30,14 @@ type Props = {
   dateKey: DateKey;
   /** Whatever was already saved for this day — empty string if nothing. */
   initialNote: string;
+  /**
+   * Called after a successful save. Writing a note creates the day's row, so
+   * the screen above needs to know the day has just become a logged day.
+   */
+  onSaved: () => void;
 };
 
-export function DayLine({ userId, dateKey, initialNote }: Props) {
+export function DayLine({ userId, dateKey, initialNote, onSaved }: Props) {
   const [note, setNote] = useState(initialNote);
   const [saved, setSaved] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -66,6 +71,7 @@ export function DayLine({ userId, dateKey, initialNote }: Props) {
         lastSaved.current = pending;
         setSaved(true);
         setFailed(false);
+        onSaved();
       } catch {
         setFailed(true);
       }
@@ -79,7 +85,7 @@ export function DayLine({ userId, dateKey, initialNote }: Props) {
      * stop.
      */
     return () => clearTimeout(timer);
-  }, [note, userId, dateKey]);
+  }, [note, userId, dateKey, onSaved]);
 
   // Grow the box to fit, up to the cap, then let it scroll.
   useEffect(() => {

@@ -223,6 +223,11 @@ export const UI = {
   logZeroButton: "Log this day as 0",
 
   loading: "Loading",
+  /**
+   * Shown if the numbers could not be refreshed after a write that did
+   * succeed. Stale figures with no explanation would be worse than saying so.
+   */
+  metricsStale: "Numbers may be out of date.",
   /** Stated flatly. A failed write is a network fact, not a personal failing. */
   loadFailed: "Couldn't load this day. Refresh when you're back online.",
   saveFailed: "That didn't save. Tap it again.",
