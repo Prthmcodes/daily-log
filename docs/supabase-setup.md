@@ -32,11 +32,14 @@ Supabase refuses to redirect anywhere that is not on this list, and
 `{{ .RedirectTo }}` above is exactly such a redirect. If a link takes you
 somewhere unexpected, this is why.
 
-- **Site URL:** `http://localhost:3000` during development; the deployed
-  address once it is live.
+- **Site URL:** `https://daily-log-zeta-teal.vercel.app`
 - **Redirect URLs:** add both, so links work from either.
+  - `https://daily-log-zeta-teal.vercel.app/**`
   - `http://localhost:3000/**`
-  - `https://<the deployed domain>/**`
+
+The domain is Vercel's own invention: `daily-log.vercel.app` was already taken
+by an unrelated project, so it generated `daily-log-zeta-teal`. A custom domain
+would replace it, and both settings above would need updating with it.
 
 ## 3. Things worth knowing
 

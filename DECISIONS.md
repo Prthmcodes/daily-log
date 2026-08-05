@@ -467,3 +467,24 @@ password (400 `invalid_credentials`), `updateUser({ password })` (200), sign in
 with the new one (200), old one refused (400), and a three-character password
 rejected upstream (422 `weak_password`) — so the form's eight-character rule is
 stricter than the server's, not a substitute for it.
+
+## Chunk 13 — Deploy
+
+**Live at https://daily-log-zeta-teal.vercel.app.** Vercel generated that name
+because `daily-log.vercel.app` already belongs to an unrelated project.
+
+**Imported from GitHub rather than uploaded.** The Vercel connector available
+here can push a file tree directly, but it has no way to set environment
+variables — and this app deliberately refuses to build without them, since
+`src/lib/supabase/client.ts` throws at import time if either is missing. Going
+through the dashboard also links the repository, so every push to `main` now
+deploys itself.
+
+**Verified rather than assumed.** The two environment variables were confirmed
+present in the production JavaScript bundle by fetching every chunk the page
+references and searching for the project URL and the publishable key — a build
+can succeed while pointing at the wrong project, and the app would then look
+perfectly fine and talk to nothing. Route protection was checked against the
+live site: `/`, `/list` and `/account` all return 307 to `/sign-in` when signed
+out, and `/auth/confirm` returns 200 because it has to be reachable to complete
+a sign-in.
