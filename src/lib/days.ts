@@ -107,3 +107,29 @@ export async function saveMarks(
 
   if (error) throw error;
 }
+
+/**
+ * Write the day line, creating the row if it does not exist.
+ *
+ * The second of the two functions that may bring a `days` row into being, and
+ * again only from a deliberate action — typing. Rendering the textarea, or
+ * moving the cursor into it, must never reach this.
+ *
+ * As with `saveMarks`, the upsert names only the column it sets, so saving a
+ * note leaves the five marks alone.
+ */
+export async function saveNote(
+  client: Client,
+  userId: string,
+  dateKey: DateKey,
+  note: string,
+): Promise<void> {
+  const { error } = await client
+    .from("days")
+    .upsert(
+      { user_id: userId, date: dateKey, note },
+      { onConflict: "user_id,date" },
+    );
+
+  if (error) throw error;
+}

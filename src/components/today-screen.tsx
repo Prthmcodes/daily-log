@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { DayLine } from "@/components/day-line";
 import { MarkToggle } from "@/components/mark-toggle";
 import { MARKS, SCORE_LABELS, UI, type MarkKey } from "@/lib/copy";
 import { formatDayLabel, todayKey, type DateKey } from "@/lib/date";
@@ -24,6 +25,8 @@ export function TodayScreen({ userId }: Props) {
   // null means "not loaded yet". It is also how we know the date is ready.
   const [dateKey, setDateKey] = useState<DateKey | null>(null);
   const [marks, setMarks] = useState<Marks>(NO_MARKS);
+  // Only ever used as DayLine's starting value; it keeps its own state after.
+  const [initialNote, setInitialNote] = useState("");
   const [loadFailed, setLoadFailed] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
 
@@ -44,6 +47,9 @@ export function TodayScreen({ userId }: Props) {
         // opening the app is not the same as logging the day.
         const row = await fetchDay(createClient(), key);
         setMarks(marksOf(row));
+        // `?? ""` is the nullish coalescing operator: use the left side unless
+        // it is null or undefined. A day with no row has no note.
+        setInitialNote(row?.note ?? "");
         setDateKey(key);
       } catch {
         setLoadFailed(true);
@@ -127,6 +133,8 @@ export function TodayScreen({ userId }: Props) {
           {UI.saveFailed}
         </p>
       )}
+
+      <DayLine userId={userId} dateKey={dateKey} initialNote={initialNote} />
     </section>
   );
 }

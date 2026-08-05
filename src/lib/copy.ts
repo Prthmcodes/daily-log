@@ -160,6 +160,11 @@ export const DAY_LINE = {
   placeholder:
     "One or two lines. What actually happened. No verdict on yourself — just the fact.",
   savedIndicator: "saved",
+  /**
+   * For screen readers only. A placeholder disappears the moment you type, so
+   * it cannot do the job of a label.
+   */
+  label: "How the day went",
 } as const;
 
 /* ------------------------------------------------------------------ *

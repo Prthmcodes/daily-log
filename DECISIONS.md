@@ -215,3 +215,30 @@ nothing to a screen reader.
 
 **`middleware.ts` became `proxy.ts`.** Next.js 16 renamed the convention and
 warned about it on every start. Renamed rather than left to break later.
+
+## Chunk 7 — The day line
+
+**A ref holds the last saved text, and it is what stops the app logging days
+by itself.** The autosave effect runs whenever the text changes, and the first
+render counts as a change. If it saved unconditionally, opening the app would
+write a row and mark the day as logged — the exact thing 6.3 forbids. Starting
+`lastSaved` equal to the text that came out of the database means there is
+nothing to save until you type something different. It is the first line of the
+effect for a reason.
+
+**Effect cleanup is what makes the debounce a debounce.** Each keystroke
+schedules a save in 500ms and cancels the one scheduled by the previous
+keystroke. Typing twenty characters therefore sends one request, half a second
+after you stop, rather than twenty.
+
+**The box has a minimum height as well as a maximum.** The grow-to-fit effect
+measures the content, and an empty textarea measures one line — so without a
+floor it opened as a single-line box that looked like a search field. Both
+figures are derived, not guessed: 13.5px at 1.55 line height is 20.93px a line,
+so two lines plus padding and borders is 61.85px and four is 103.70px.
+
+**Typing then deleting everything still leaves a logged day.** The first
+debounce fires while there is text, which creates the row; clearing the text
+afterwards saves an empty note but the row remains. That is correct — you did
+deliberately write something — and it is the same outcome as pressing "Log this
+day as 0".
