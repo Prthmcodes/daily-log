@@ -73,3 +73,28 @@ warns on every run, because `package.json` has no `"type": "module"`. The
 `.mts` extension marks it as ESM and the warning goes away. Adding
 `"type": "module"` instead would have changed how Next.js reads its own config
 files, which was not worth it.
+
+## Chunk 3 — Copy
+
+**The banner is stored as segments, not as HTML.** Two words in it are bold and
+highlighted. Storing `"...does <b>not</b> end..."` would mean rendering it with
+`dangerouslySetInnerHTML`, so instead it is an array of
+`{ text, emphasis }` pieces the component maps over. A test joins them back
+together and compares against the full sentence, because the spacing at the
+segment boundaries is easy to break and impossible to spot by eye.
+
+**Score labels are stored without their leading number.** The spec writes them
+as "0 — Zero is data...", but the number is rendered separately beside the
+score, so storing it in the string would print it twice.
+
+**Copy is pinned by tests.** Unusual, and deliberate: the likeliest way this
+wording breaks is a well-meaning tidy-up during an unrelated refactor. Two of
+the tests enforce design rules directly — no string on the list screen may
+contain a digit, a percent sign or the word "of" (rule 10), and nothing outside
+the subtitle may say "streak", "record", "chain" or "days since" (rules 1
+and 2).
+
+**Screen furniture lives here too.** The brief's verbatim list covers 5.1–5.4,
+5.6 and 5.7, but rule 5.5 says *no* inline strings, and headings and button
+labels are strings the user reads. They are carried over from the prototype
+into a separate `UI` block rather than invented.
