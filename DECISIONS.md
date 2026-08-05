@@ -98,3 +98,38 @@ and 2).
 5.6 and 5.7, but rule 5.5 says *no* inline strings, and headings and button
 labels are strings the user reads. They are carried over from the prototype
 into a separate `UI` block rather than invented.
+
+## Chunk 4 — Database
+
+**Supabase project `daily-log`, ref `oqisbcdzykcmunflemho`, eu-west-2, free tier.**
+
+**Three deviations from the schema in the brief, all small, all flagged:**
+
+1. *An `updated_at` trigger was added.* Both tables have an `updated_at` column
+   defaulting to `now()`, but nothing was ever going to change it, so it would
+   have sat permanently equal to `created_at`. A column that lies is worse than
+   no column.
+2. *The trigger function is `SECURITY INVOKER` with `EXECUTE` revoked.* The
+   first version was `SECURITY DEFINER`, and Supabase's security linter
+   immediately pointed out that this also publishes it as an RPC endpoint
+   callable by anyone, signed in or not. It only stamps a column on the row
+   being written, so it needs no elevated rights at all.
+3. *Policies use `(select auth.uid())` rather than a bare `auth.uid()`.*
+   Identical meaning; Postgres evaluates it once per query instead of once per
+   row. Supabase's performance linter flags the bare form, and a permanently
+   warning advisor page is a page nobody reads.
+
+**Isolation was tested, not asserted.** Two real users were created in
+`auth.users`, one wrote to both tables, and the other was then given a genuine
+`authenticated` session and could see zero rows in either, could not update or
+delete anything, and was refused outright when trying to insert a row owned by
+the first. The same was checked anonymously and over the real HTTP API. The
+whole thing was re-run after the policy rewrite, because rewriting a policy is
+exactly how a table gets quietly opened up. Probe users were then deleted.
+
+**The generated types file leaves out Supabase's generic helpers.** It emits
+`Tables<>`, `TablesInsert<>` and friends — dense conditional types that nothing
+here uses. `src/lib/supabase/types.ts` has plain aliases instead.
+
+**`.env.example` is committed; `.env.local` is not.** The `.gitignore` rule
+`.env*` was swallowing both, so there is now an explicit `!.env.example`.
