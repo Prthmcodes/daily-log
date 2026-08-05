@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+/*
+  Design tokens for Daily Log.
+
+  Tailwind v4 has no tailwind.config.ts — you define tokens here in CSS and
+  Tailwind generates the utility classes from them. A token named
+  `--color-accent` becomes `bg-accent`, `text-accent`, `border-accent`, etc.
+
+  Palette rule: nothing in this app uses a colour that isn't listed below.
+  If you need a new shade, add it here first and give it a name.
+*/
+@theme {
+  /* Surfaces */
+  --color-background: #faf9f7; /* page */
+  --color-card: #ffffff; /* cards */
+  --color-field: #fdfcfa; /* inside text inputs */
+  --color-hover: #f2f0ec; /* button hover */
+  --color-row-hover: #f7f5f2; /* list row hover */
+
+  /* Lines */
+  --color-line: #e6e3dd; /* card borders */
+  --color-rule: #eeebe5; /* dividers inside a card */
+  --color-control: #ddd9d2; /* button + control borders */
+  --color-field-line: #e2dfd8; /* text input borders */
+  --color-box: #c4c0b8; /* unchecked checkbox border */
+
+  /* Text. `faint` fails WCAG AA at small sizes — large or decorative only. */
+  --color-ink: #1c1b19;
+  --color-muted: #6b6862;
+  --color-faint: #8a867e;
+
+  /* Accent + the "on" state of a mark */
+  --color-accent: #3d7a4d;
+  --color-on: #f1f6f1;
+  --color-on-line: #d4e5d7;
+
+  /* The "today" pill */
+  --color-tag: #eef3ee;
+  --color-tag-ink: #3d6b45;
+  --color-tag-line: #cfe0d2;
+
+  /* Reframe banner */
+  --color-banner: #1c1b19;
+  --color-highlight: #ffd479;
+
+  /*
+    Score ramp, 0 to 5. Grey to green, never red — a low score is neutral
+    information, not a warning (design rule 4).
+  */
+  --color-score-0: #eeebe5;
+  --color-score-1: #dfe9e0;
+  --color-score-2: #bcd6c0;
+  --color-score-3: #8fbb97;
+  --color-score-4: #63a070;
+  --color-score-5: #3d7a4d;
+
+  /*
+    A day you never opened is NOT a zero. It gets its own paler fill and a
+    dashed border so the two can never be confused (design rule 3).
+  */
+  --color-unlogged: #f5f3ef;
+
+  --radius-card: 12px;
+  --radius-control: 8px;
+
+  --font-sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+}
+
+/* Section 6.5: honour the OS "reduce motion" setting. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
