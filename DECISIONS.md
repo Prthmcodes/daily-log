@@ -396,3 +396,27 @@ tasks do not carry over.
 rendered, no percent sign, no `<progress>`, no rounding, no import of anything
 that can produce a score, and no colour anywhere that responds to how much is
 done.
+
+### Chunk 12 fix — the sign-in raced itself for the one-time code
+
+Symptom: Supabase logged `action: login` on `/verify`, and yet
+`auth.sessions` was empty, `last_sign_in_at` was null, and there was no
+`/token` exchange anywhere in the log. The app looked as though every link had
+expired.
+
+Cause: `@supabase/ssr`'s `createBrowserClient` sets `flowType: "pkce"` and
+`detectSessionInUrl: true`, and `_initialize()` therefore reads the URL and
+exchanges the code **by itself**. The confirm page was calling
+`exchangeCodeForSession` as well. Two consumers, one single-use code and one
+single-use verifier: whichever got there first destroyed it for the other, and
+neither reliably produced a session.
+
+The manual exchange is gone. The client is left to do it, `verifyOtp` is kept
+only for the `token_hash` shape which the client does not handle, and an
+`onAuthStateChange` subscription catches the case where the exchange completes
+after the initial check. The subscription is unsubscribed in the effect
+cleanup.
+
+Also: the error is now read from the query string as well as the fragment.
+Supabase puts it in either depending on the flow, and the observed failure had
+it in the query string.

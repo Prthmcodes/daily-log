@@ -8,72 +8,87 @@ import { createClient } from "@/lib/supabase/client";
 /**
  * Where the link in the sign-in email lands.
  *
- * This has to be a client component, and that is the whole point. Supabase can
- * finish a sign-in in three different shapes depending on the email template
- * and the flow:
+ * This has to run in the browser, and that is the point. Supabase can finish a
+ * sign-in in three different shapes:
  *
- *   #access_token=...  in the URL *fragment* (the implicit flow)
- *   ?code=...          in the query string (the PKCE flow)
- *   ?token_hash=...    in the query string (the recommended template)
+ *   ?code=...          the PKCE flow, which is what this app uses
+ *   #access_token=...  the implicit flow, in the URL *fragment*
+ *   ?token_hash=...    the recommended email template
  *
- * A fragment is never sent to the server — browsers strip everything after the
- * `#` before making the request. So a server route handler is structurally
- * incapable of seeing the first case, and will conclude the link was empty
- * and bounce you back to sign-in even though the sign-in actually worked.
+ * A fragment is never sent to the server — the browser strips everything after
+ * the `#` before making the request — so a server route handler cannot see the
+ * second case at all, and would conclude the link was empty.
  *
- * Running in the browser means all three are visible. The Supabase client
- * handles the fragment itself on startup (`detectSessionInUrl` is on by
- * default); the two query-string cases are handled explicitly below.
+ * The important thing here is what this file does NOT do. The Supabase client
+ * is configured with `detectSessionInUrl`, so simply creating it reads the URL
+ * and exchanges the code by itself. Calling `exchangeCodeForSession` as well
+ * makes two things race for the same single-use code: one wins, the other
+ * destroys the verifier, and the sign-in silently produces no session at all.
+ * That bug looked exactly like an expired link.
  */
 export default function ConfirmPage() {
   const [failed, setFailed] = useState(false);
 
-  // useEffect runs after the component is on screen. The empty [] at the end
-  // means "only once", not on every re-render.
   useEffect(() => {
-    // Declared inside the effect because effects cannot themselves be async.
-    async function finishSignIn() {
-      const supabase = createClient();
-      const params = new URLSearchParams(window.location.search);
-      const hash = new URLSearchParams(window.location.hash.slice(1));
+    const params = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.slice(1));
 
-      // Supabase reports a dead link in the fragment too, so check it first.
-      if (hash.get("error")) {
+    // Creating the client is what consumes the link.
+    const supabase = createClient();
+
+    /*
+     * Listen before asking. If the exchange finishes after the check below,
+     * this still catches it. `onAuthStateChange` also fires once on startup
+     * with no session, which is why the session itself is tested rather than
+     * the event name.
+     */
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) window.location.replace("/");
+    });
+
+    async function finishSignIn() {
+      // Supabase reports a dead link in the query string or the fragment
+      // depending on the flow, so both are worth checking.
+      if (params.get("error") || hash.get("error")) {
         setFailed(true);
         return;
       }
 
       const tokenHash = params.get("token_hash");
       const type = params.get("type");
-      const code = params.get("code");
 
+      // The one case the client does not handle on its own.
       if (tokenHash && type) {
         await supabase.auth.verifyOtp({
           type: type as "magiclink" | "signup" | "recovery" | "email",
           token_hash: tokenHash,
         });
-      } else if (code) {
-        await supabase.auth.exchangeCodeForSession(code);
       }
-      // Nothing to do in the fragment case — creating the client above already
-      // read the tokens out of the URL and stored the session.
 
+      // getSession waits for the client to finish reading the URL, so by the
+      // time this returns the exchange has either worked or failed.
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
-      if (!session) {
-        setFailed(true);
+      if (session) {
+        // A full page load rather than a client-side route change, so the
+        // request carries the newly written cookies and the server sees the
+        // session it is about to be asked to trust.
+        window.location.replace("/");
         return;
       }
 
-      // A full page load rather than a client-side route change, so the
-      // request carries the newly written cookies and the server sees the
-      // session it is about to be asked to trust.
-      window.location.replace("/");
+      setFailed(true);
     }
 
     finishSignIn();
+
+    // Effect cleanup: stop listening if this screen goes away, so the
+    // subscription cannot outlive the component.
+    return () => subscription.unsubscribe();
   }, []);
 
   return (
@@ -87,7 +102,7 @@ export default function ConfirmPage() {
           <p className="mt-2 text-[13px] text-muted">{AUTH.linkExpired}</p>
           <a
             href="/sign-in"
-            className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-[var(--radius-control)] border border-control bg-card px-4 text-[14px] text-ink hover:bg-hover"
+            className="mt-4 inline-flex min-h-11 items-center justify-center rounded-[var(--radius-control)] border border-control bg-card px-4 text-[14px] text-ink hover:bg-hover"
           >
             {AUTH.sendButton}
           </a>
