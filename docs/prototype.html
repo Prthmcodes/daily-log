@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Log — No Streaks</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px;
+    background: #faf9f7; color: #1c1b19;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.55;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 2px; letter-spacing: -0.01em; }
+  .sub { color: #6b6862; font-size: 13px; margin-bottom: 22px; }
+  .card {
+    background: #fff; border: 1px solid #e6e3dd; border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 16px;
+  }
+  .banner {
+    background: #1c1b19; color: #fff; border-radius: 12px;
+    padding: 14px 18px; margin-bottom: 18px; font-size: 14px;
+  }
+  .banner b { color: #ffd479; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em;
+       color: #8a867e; margin: 0 0 14px; font-weight: 600; }
+  .datebar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .datebar .d { font-size: 16px; font-weight: 600; }
+  .datebar .today { font-size: 11px; background: #eef3ee; color: #3d6b45;
+        border: 1px solid #cfe0d2; padding: 2px 8px; border-radius: 20px; }
+  button.nav {
+    border: 1px solid #ddd9d2; background: #fff; border-radius: 7px;
+    width: 30px; height: 30px; cursor: pointer; font-size: 15px; color: #55524d;
+  }
+  button.nav:hover { background: #f2f0ec; }
+  button.nav:disabled { opacity: .3; cursor: default; }
+
+  .mark {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 11px 12px; border-radius: 9px; cursor: pointer;
+    border: 1px solid transparent; user-select: none;
+  }
+  .mark:hover { background: #f7f5f2; }
+  .mark.on { background: #f1f6f1; border-color: #d4e5d7; }
+  .box {
+    flex: 0 0 20px; width: 20px; height: 20px; margin-top: 1px;
+    border: 1.5px solid #c4c0b8; border-radius: 5px; background: #fff;
+    display: grid; place-items: center; font-size: 13px; color: #fff;
+  }
+  .mark.on .box { background: #3d7a4d; border-color: #3d7a4d; }
+  .mark .t { font-weight: 550; }
+  .mark .w { color: #79756e; font-size: 12.5px; display: block; margin-top: 1px; }
+
+  .scorerow { display: flex; align-items: baseline; gap: 14px; margin-top: 14px;
+              padding-top: 14px; border-top: 1px solid #eeebe5; }
+  .score { font-size: 30px; font-weight: 650; letter-spacing: -0.02em; }
+  .score small { font-size: 15px; color: #a09c94; font-weight: 500; }
+  .scorelabel { font-size: 13px; color: #6b6862; }
+  .zerobtn {
+    margin-left: auto; border: 1px solid #ddd9d2; background: #fff;
+    border-radius: 7px; padding: 6px 11px; font: inherit; font-size: 12.5px;
+    color: #6b6862; cursor: pointer; white-space: nowrap;
+  }
+  .zerobtn:hover { background: #f2f0ec; }
+
+  textarea {
+    width: 100%; min-height: 58px; resize: vertical; margin-top: 12px;
+    border: 1px solid #e2dfd8; border-radius: 8px; padding: 9px 11px;
+    font: inherit; font-size: 13.5px; background: #fdfcfa; color: #1c1b19;
+  }
+  textarea:focus { outline: 2px solid #cfe0d2; outline-offset: -1px; }
+
+  .metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .metric { text-align: center; padding: 4px 0; }
+  .metric .n { font-size: 25px; font-weight: 650; letter-spacing: -0.02em; }
+  .metric .l { font-size: 11.5px; color: #8a867e; margin-top: 2px; }
+
+  .grid { display: grid; grid-template-columns: repeat(15, 1fr); gap: 5px; }
+  .cell { aspect-ratio: 1; border-radius: 4px; background: #eeebe5;
+          cursor: pointer; position: relative; }
+  .cell.sel { outline: 2px solid #1c1b19; outline-offset: 1px; }
+  .legend { display: flex; gap: 8px; align-items: center; margin-top: 12px;
+            font-size: 11.5px; color: #8a867e; }
+  .legend i { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
+
+  ol.rules { margin: 0; padding-left: 20px; }
+  ol.rules li { margin-bottom: 11px; }
+  ol.rules b { display: block; }
+  ol.rules span { color: #6b6862; font-size: 13.5px; }
+  .foot { color: #a09c94; font-size: 11.5px; text-align: center; margin: 22px 0 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Daily Log</h1>
+<div class="sub">No streaks. No pass/fail. Each day is scored on its own.</div>
+
+<div class="banner">
+    A slip before noon does <b>not</b> end the day. Yesterday does <b>not</b> create a debt.
+    The only number that matters here is the 7-day average — one zero barely moves it.
+</div>
+
+<div class="card">
+<div class="datebar">
+<button class="nav" id="prev">‹</button>
+<button class="nav" id="next">›</button>
+<span class="d" id="dlabel"></span>
+<span class="today" id="todaytag" style="display:none">today</span>
+</div>
+
+<div id="marks"></div>
+
+<div class="scorerow">
+<div class="score" id="score">0<small>/5</small></div>
+<div class="scorelabel" id="scorelabel"></div>
+<button id="logzero" class="zerobtn">Log this day as 0</button>
+</div>
+
+<textarea id="note" placeholder="One line: what actually happened. No verdict on yourself — just the fact."></textarea>
+</div>
+
+<div class="card">
+<h2>The numbers</h2>
+<div class="metrics">
+<div class="metric"><div class="n" id="m7">–</div><div class="l">7-day average</div></div>
+<div class="metric"><div class="n" id="m30">–</div><div class="l">30-day average</div></div>
+<div class="metric"><div class="n" id="mlog">–</div><div class="l">days logged</div></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Last 30 days</h2>
+<div class="grid" id="grid"></div>
+<div class="legend">
+<span>0</span>
+<i style="background:#eeebe5"></i><i style="background:#dfe9e0"></i>
+<i style="background:#bcd6c0"></i><i style="background:#8fbb97"></i>
+<i style="background:#63a070"></i><i style="background:#3d7a4d"></i>
+<span>5</span>
+<span style="margin-left:auto">click a day to edit it</span>
+</div>
+</div>
+
+<div class="card">
+<h2>The protocol — read this when you're about to write the day off</h2>
+<ol class="rules">
+<li><b>Never finish an episode.</b>
+<span>The compulsion isn't to start, it's to complete. So make stopping mid-sentence the normal thing. Pause at a random point and don't return. If you'd feel a pull to finish it, that's the exact thing to practise breaking.</span></li>
+<li><b>90 seconds before play.</b>
+<span>You don't have to say no. You have to wait. Sit in the silence for 90 seconds, then decide. Most of the time the hand-reaching-for-play was never a decision at all, and 90 seconds is long enough for the wave to pass.</span></li>
+<li><b>Nothing in your ears while words are coming out of your head.</b>
+<span>Writing while listening to speech is two verbal streams fighting for one buffer. That isn't multitasking, it's interference. This rule is not negotiable, and it's the cheapest one to keep.</span></li>
+<li><b>The shower stays silent.</b>
+<span>Unstructured, low-stimulus time is where loose thoughts connect. It's the only slot in your day that does that job. Filling it costs you something you can't get back later.</span></li>
+<li><b>One real human contact per day.</b>
+<span>A voice in the room is a legitimate need, not a weakness. If you don't feed it deliberately, a stranger's podcast will. One call, one voice note, one conversation. It counts even if it's two minutes.</span></li>
+</ol>
+</div>
+
+<div class="foot">Saved in this browser. Nothing leaves your machine.</div>
+</div>
+
+<script>
+(function () {
+  var KEY = "daily-log-v1";
+  var MARKS = [
+    { id: "shower", t: "Shower was silent",            w: "No audio from tap on to towel off." },
+    { id: "meal",   t: "One meal with no screen",      w: "Just one. Not all of them." },
+    { id: "work",   t: "Nothing playing while I worked", w: "Studying, writing, reading, coding — ears empty." },
+    { id: "wait",   t: "Waited 90s before any play",   w: "Counts even if I pressed play afterwards." },
+    { id: "human",  t: "Talked to a real person",      w: "Call, voice note, in person. Two minutes counts." }
+  ];
+  var SHADES = ["#eeebe5", "#dfe9e0", "#bcd6c0", "#8fbb97", "#63a070", "#3d7a4d"];
+  var LABELS = [
+    "Zero is data, not a verdict. Log it and move on.",
+    "One is not nothing. Tomorrow starts at zero either way.",
+    "Two. The average is what moves, not this.",
+    "Three. Solid, ordinary day.",
+    "Four. Good day.",
+    "Five. Note what made it easy — that's the useful part."
+  ];
+
+  var data = {};
+  try { data = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { data = {}; }
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+  function key(d) {
+    return d.getFullYear() + "-" +
+      String(d.getMonth() + 1).padStart(2, "0") + "-" +
+      String(d.getDate()).padStart(2, "0");
+  }
+  function todayKey() { return key(new Date()); }
+  function dayOf(k) { return data[k] || { marks: {}, note: "" }; }
+  function scoreOf(k) {
+    var d = data[k]; if (!d) return null;
+    var n = 0; MARKS.forEach(function (m) { if (d.marks[m.id]) n++; });
+    return n;
+  }
+  // A day counts once you've touched it — including a deliberate zero.
+  // Days you never opened are excluded, so absence never masquerades as failure.
+  function isLogged(k) {
+    var d = data[k]; if (!d) return false;
+    return !!d.touched ||
+      MARKS.some(function (m) { return d.marks[m.id]; }) ||
+      (d.note || "").trim().length > 0;
+  }
+  function touch(k) {
+    var d = data[k] || (data[k] = { marks: {}, note: "" });
+    d.touched = true;
+    return d;
+  }
+
+  var sel = todayKey();
+
+  function lastNKeys(n) {
+    var out = [], d = new Date();
+    for (var i = 0; i < n; i++) {
+      out.unshift(key(d));
+      d.setDate(d.getDate() - 1);
+    }
+    return out;
+  }
+
+  // Average over logged days only, so an untouched day doesn't punish you.
+  function avg(n) {
+    var ks = lastNKeys(n), sum = 0, cnt = 0;
+    ks.forEach(function (k) { if (isLogged(k)) { sum += scoreOf(k); cnt++; } });
+    return cnt ? (sum / cnt) : null;
+  }
+
+  function renderMarks() {
+    var day = dayOf(sel);
+    var box = document.getElementById("marks");
+    box.innerHTML = "";
+    MARKS.forEach(function (m) {
+      var on = !!day.marks[m.id];
+      var el = document.createElement("div");
+      el.className = "mark" + (on ? " on" : "");
+      el.innerHTML = '<div class="box">' + (on ? "✓" : "") + '</div>' +
+        '<div><span class="t">' + m.t + '</span><span class="w">' + m.w + '</span></div>';
+      el.addEventListener("click", function () {
+        var d = touch(sel);
+        d.marks[m.id] = !d.marks[m.id];
+        save(); render();
+      });
+      box.appendChild(el);
+    });
+  }
+
+  function render() {
+    var d = new Date(sel + "T12:00:00");
+    document.getElementById("dlabel").textContent =
+      d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
+    document.getElementById("todaytag").style.display = (sel === todayKey()) ? "" : "none";
+    document.getElementById("next").disabled = (sel === todayKey());
+
+    renderMarks();
+
+    var s = scoreOf(sel) || 0;
+    document.getElementById("score").innerHTML = s + '<small>/5</small>';
+    document.getElementById("scorelabel").textContent = LABELS[s];
+
+    document.getElementById("logzero").style.display = isLogged(sel) ? "none" : "";
+
+    var note = document.getElementById("note");
+    if (note.value !== dayOf(sel).note) note.value = dayOf(sel).note || "";
+
+    var a7 = avg(7), a30 = avg(30);
+    document.getElementById("m7").textContent = a7 === null ? "–" : a7.toFixed(1);
+    document.getElementById("m30").textContent = a30 === null ? "–" : a30.toFixed(1);
+    document.getElementById("mlog").textContent =
+      Object.keys(data).filter(isLogged).length;
+
+    var g = document.getElementById("grid");
+    g.innerHTML = "";
+    lastNKeys(30).forEach(function (k) {
+      var c = document.createElement("div");
+      c.className = "cell" + (k === sel ? " sel" : "");
+      var sc = isLogged(k) ? scoreOf(k) : null;
+      c.style.background = sc === null ? "#f5f3ef" : SHADES[sc];
+      if (sc === null) c.style.border = "1px dashed #e2dfd8";
+      c.title = k + (sc === null ? " — not logged" : " — " + sc + "/5");
+      c.addEventListener("click", function () { sel = k; render(); });
+      g.appendChild(c);
+    });
+  }
+
+  document.getElementById("logzero").addEventListener("click", function () {
+    touch(sel); save(); render();
+  });
+  document.getElementById("note").addEventListener("input", function () {
+    var d = touch(sel);
+    d.note = this.value; save();
+  });
+  document.getElementById("prev").addEventListener("click", function () {
+    var d = new Date(sel + "T12:00:00"); d.setDate(d.getDate() - 1); sel = key(d); render();
+  });
+  document.getElementById("next").addEventListener("click", function () {
+    if (sel === todayKey()) return;
+    var d = new Date(sel + "T12:00:00"); d.setDate(d.getDate() + 1); sel = key(d); render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
