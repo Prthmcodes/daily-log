@@ -521,3 +521,45 @@ it anyway (23514) if anything ever bypasses the client.
 
 **MarkToggle now takes a label and a helper instead of a Mark.** It was typed
 to the five habit keys, which no longer covers everything it renders.
+
+## Chunk 14 — Verification pass
+
+Everything in the brief's list that can be checked without holding the phone,
+run against the live database with two real users.
+
+```
+ 1. 23:59 local resolves to the local day, not UTC           PASS
+      London: local 2026-08-05 / UTC 2026-08-05
+      New_York: local 2026-08-05 / UTC 2026-08-06
+      Auckland: local 2026-08-05 / UTC 2026-08-05
+ 2. days, tasks and extras all store the same local key      PASS
+ 3. unlogged day excluded (avg 3.7) vs deliberate zero (2.8)  PASS
+ 4. a day with tasks + extras but no marks is still unlogged  PASS
+ 5. tomorrow refused by the date guard and the URL guard      PASS
+ 6. the link between screens carries the day, not a reset     PASS
+ 7. the other user sees days:0 tasks:0 extras:0               PASS
+ 8. writing another user's rows refused on all three (403x3)  PASS
+ 9. signed out sees days:0 tasks:0 extras:0                   PASS
+```
+
+Line 1 is the point of the whole date module: at 23:59 in New York the UTC date
+is already the next day, and the app is not.
+
+**Section 4, audited against the source with comments stripped.** Nothing
+streak-shaped, no red or amber, no gamification or notifications, no microphone
+or audio, `toISOString` never called, no disclosure widget, no percentage or
+rounding anywhere on the list, and the list still cannot import anything that
+produces a score. The only two matches for "streak" in shipped code are the
+subtitle and the page description, both of which promise its absence.
+
+**Rule 6.3, audited by call graph rather than by memory.** Exactly three call
+sites can create a `days` row, and they are the three deliberate actions the
+brief allows: `saveNote` from typing in the day line, `saveMarks` from toggling
+a mark, and `saveMarks(NO_MARKS)` from "Log this day as 0". Nothing else in the
+codebase writes to that table.
+
+Both Supabase advisor pages return empty for performance; security shows only
+the leaked-password check, which is a dashboard toggle and appeared because the
+app now accepts passwords.
+
+**Not verifiable from here, and left to a real device:** the two ritual timings.
