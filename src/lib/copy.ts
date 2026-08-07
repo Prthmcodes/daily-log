@@ -148,6 +148,38 @@ export const PROTOCOL: readonly ProtocolRule[] = [
 ] as const;
 
 /* ------------------------------------------------------------------ *
+ * Also today — tracked alongside the day, outside the score
+ * ------------------------------------------------------------------ */
+
+/**
+ * Three things worth noticing that are deliberately not scored.
+ *
+ * The two ticks are phrased the same way as the five marks: as the presence of
+ * something good rather than the count of a lapse. "No reels today" ticked is a
+ * fact; "reels watched: 14" would be a number that climbs when the day goes
+ * badly, sitting on a screen built so that never happens.
+ *
+ * The study count is the opposite case — it climbs with the thing you wanted —
+ * so a plain number is safe. It is shown for today only: no average, no
+ * history, nothing to beat.
+ */
+export const EXTRAS = {
+  heading: "Also today",
+  noReels: {
+    label: "No reels or shorts",
+    helper: "The whole day, not just the evening.",
+  },
+  readSomething: {
+    label: "Read a few pages",
+    helper: "Paper or screen. Two pages counts.",
+  },
+  studyLabel: "25-minute blocks",
+  studyHelper: "Whole blocks only. A half-finished one isn't a block.",
+  addBlock: "Add a block",
+  removeBlock: "Remove a block",
+} as const;
+
+/* ------------------------------------------------------------------ *
  * The day line (spec 5.6)
  * ------------------------------------------------------------------ */
 

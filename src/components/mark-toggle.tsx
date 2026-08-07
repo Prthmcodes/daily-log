@@ -1,9 +1,8 @@
 "use client";
 
-import type { Mark } from "@/lib/copy";
-
 type Props = {
-  mark: Mark;
+  label: string;
+  helper: string;
   ticked: boolean;
   /** True while another day is loading, so a tap cannot land on stale data. */
   disabled: boolean;
@@ -21,7 +20,13 @@ type Props = {
  * The whole row is the target, and it comes to just over the 44px minimum for
  * something you tap with a thumb.
  */
-export function MarkToggle({ mark, ticked, disabled, onToggle }: Props) {
+export function MarkToggle({
+  label,
+  helper,
+  ticked,
+  disabled,
+  onToggle,
+}: Props) {
   return (
     <button
       type="button"
@@ -47,10 +52,8 @@ export function MarkToggle({ mark, ticked, disabled, onToggle }: Props) {
       </span>
 
       <span>
-        <span className="font-medium">{mark.label}</span>
-        <span className="mt-px block text-[12.5px] text-muted">
-          {mark.helper}
-        </span>
+        <span className="font-medium">{label}</span>
+        <span className="mt-px block text-[12.5px] text-muted">{helper}</span>
       </span>
     </button>
   );

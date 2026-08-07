@@ -16,6 +16,12 @@ export type DayRow = Database["public"]["Tables"]["days"]["Row"];
 export type DayInsert = Database["public"]["Tables"]["days"]["Insert"];
 export type DayUpdate = Database["public"]["Tables"]["days"]["Update"];
 
+/**
+ * The things tracked alongside a day that are not part of the score.
+ * Separate from DayRow on purpose — see src/lib/extras.ts.
+ */
+export type ExtrasRow = Database["public"]["Tables"]["extras"]["Row"];
+
 /** One line of the morning list. */
 export type TaskRow = Database["public"]["Tables"]["tasks"]["Row"];
 export type TaskInsert = Database["public"]["Tables"]["tasks"]["Insert"];

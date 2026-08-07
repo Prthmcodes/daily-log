@@ -488,3 +488,36 @@ perfectly fine and talk to nothing. Route protection was checked against the
 live site: `/`, `/list` and `/account` all return 307 to `/sign-in` when signed
 out, and `/auth/confirm` returns 200 because it has to be reachable to complete
 a sign-in.
+
+## Chunk 15 — Also today (added after v1)
+
+Three things asked for after the build: reels watched, book read, and a count
+of 25-minute study blocks. Three conflicts were raised before building, and all
+three were settled deliberately.
+
+**A count of reels watched would have been a lapse counter.** Every measurement
+in this app is phrased as the presence of something good — "Shower was silent",
+not "times I caved" — so that a bad day produces a low number rather than a
+high one. A reel count climbs when the day goes badly, which is the shape of
+the thing that made every previous system collapse. It is a tick instead: "No
+reels or shorts".
+
+**The study count climbs with the thing you wanted, so a plain number is safe.**
+It is shown for today only. No average, no history, not in the grid, nothing to
+beat. The moment it sits beside yesterday's it becomes a record, and rule 2
+rules out records.
+
+**They are not part of the score, and they are in their own table.** Adding
+columns to `days` would have meant that ticking "read a few pages" created a
+`days` row — which is the definition of a logged day — so the day would count
+as a logged zero and drag the averages down. Reading a book would have made
+your score worse. Proved rather than assumed: ticking both marks and logging
+six study blocks left `days` empty and the 7-day average at "–", and logging
+the day afterwards still scored exactly 3.
+
+**`study_blocks` has a CHECK constraint as well as a guard in the code.** The
+client can never show a number the database would refuse; the database refuses
+it anyway (23514) if anything ever bypasses the client.
+
+**MarkToggle now takes a label and a helper instead of a Mark.** It was typed
+to the five habit keys, which no longer covers everything it renders.

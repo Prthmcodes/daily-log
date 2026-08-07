@@ -81,3 +81,35 @@ create trigger days_set_updated_at
 create trigger tasks_set_updated_at
   before update on public.tasks
   for each row execute function public.set_updated_at();
+
+-- Things tracked alongside the day that are deliberately NOT part of the score.
+--
+-- A separate table, exactly like tasks, and for the same reason: if these were
+-- columns on `days` then ticking "read a few pages" would create a days row,
+-- which is what "this day was logged" means, and the day would count as a
+-- logged zero and pull the averages down. Reading a book would make your score
+-- worse. Keeping them apart makes that impossible rather than something to
+-- remember not to do.
+create table public.extras (
+  id             uuid primary key default gen_random_uuid(),
+  user_id        uuid not null references auth.users(id) on delete cascade,
+  date           date not null,             -- the user's LOCAL date, never UTC
+  no_reels       boolean not null default false,
+  read_something boolean not null default false,
+  study_blocks   int not null default 0 check (study_blocks >= 0),
+  created_at     timestamptz not null default now(),
+  updated_at     timestamptz not null default now(),
+  unique (user_id, date)
+);
+
+alter table public.extras enable row level security;
+
+create policy "own rows" on public.extras
+  for all using ((select auth.uid()) = user_id)
+  with check ((select auth.uid()) = user_id);
+
+create index extras_user_date_idx on public.extras (user_id, date desc);
+
+create trigger extras_set_updated_at
+  before update on public.extras
+  for each row execute function public.set_updated_at();

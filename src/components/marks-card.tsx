@@ -32,7 +32,8 @@ export function MarksCard({
         {MARKS.map((mark) => (
           <MarkToggle
             key={mark.key}
-            mark={mark}
+            label={mark.label}
+            helper={mark.helper}
             ticked={marks[mark.key]}
             disabled={busy}
             // An arrow function so each row calls onToggle with its own key.

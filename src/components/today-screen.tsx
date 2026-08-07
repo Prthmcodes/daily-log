@@ -3,6 +3,7 @@
 import { DateBar } from "@/components/date-bar";
 import { DayGrid } from "@/components/day-grid";
 import { DayLine } from "@/components/day-line";
+import { ExtrasCard } from "@/components/extras-card";
 import { MarksCard } from "@/components/marks-card";
 import { MetricsPanel } from "@/components/metrics-panel";
 import { ScreenNav } from "@/components/screen-nav";
@@ -73,6 +74,17 @@ export function TodayScreen({ userId }: Props) {
           />
         )}
       </section>
+
+      {/*
+        Below the marks and above the numbers, so it reads as part of the day
+        rather than part of the score. The `key` makes React build a fresh one
+        when you move to another date, the same way the day line works.
+      */}
+      <ExtrasCard
+        key={day.selectedKey}
+        userId={userId}
+        dateKey={day.selectedKey}
+      />
 
       <MetricsPanel
         sevenDay={formatAverage(

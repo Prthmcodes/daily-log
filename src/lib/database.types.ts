@@ -76,6 +76,39 @@ export type Database = {
         };
         Relationships: [];
       };
+      extras: {
+        Row: {
+          created_at: string;
+          date: string;
+          id: string;
+          no_reels: boolean;
+          read_something: boolean;
+          study_blocks: number;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          date: string;
+          id?: string;
+          no_reels?: boolean;
+          read_something?: boolean;
+          study_blocks?: number;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          date?: string;
+          id?: string;
+          no_reels?: boolean;
+          read_something?: boolean;
+          study_blocks?: number;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       tasks: {
         Row: {
           created_at: string;
