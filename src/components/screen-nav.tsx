@@ -21,16 +21,16 @@ type Props = {
  */
 export function ScreenNav({ current, selectedKey, todayK }: Props) {
   const base =
-    "min-h-11 inline-flex items-center px-1 text-[14px] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent";
+    "min-h-11 inline-flex items-center text-base focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent";
 
   return (
-    <nav className="mb-4 flex gap-4">
+    <nav className="mb-3 flex gap-5">
       <Link
         href={screenHref("/", selectedKey, todayK)}
         aria-current={current === "today" ? "page" : undefined}
         className={`${base} ${
           current === "today"
-            ? "font-medium text-ink underline underline-offset-4"
+            ? "font-medium text-ink border-b-2 border-ink"
             : "text-muted hover:text-ink"
         }`}
       >
@@ -42,7 +42,7 @@ export function ScreenNav({ current, selectedKey, todayK }: Props) {
         aria-current={current === "list" ? "page" : undefined}
         className={`${base} ${
           current === "list"
-            ? "font-medium text-ink underline underline-offset-4"
+            ? "font-medium text-ink border-b-2 border-ink"
             : "text-muted hover:text-ink"
         }`}
       >

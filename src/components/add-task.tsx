@@ -38,7 +38,7 @@ export function AddTask({ onAdd }: Props) {
         onChange={(event) => setText(event.target.value)}
         aria-label={MORNING_LIST.addTaskPlaceholder}
         placeholder={MORNING_LIST.addTaskPlaceholder}
-        className="min-h-11 w-full rounded-[var(--radius-control)] border border-field-line bg-field px-[11px] text-[14px] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
+        className="min-h-11 w-full rounded-[var(--radius-control)] border-[0.5px] border-field-line bg-field px-3 text-base text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
       />
 
       {/*

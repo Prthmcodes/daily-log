@@ -29,13 +29,16 @@ export function DateBar({ selectedKey, todayK, onSelect }: Props) {
     onSelect(next);
   }
 
+  const arrow =
+    "grid size-11 shrink-0 place-items-center rounded-[var(--radius-control)] border-[0.5px] border-control text-base text-muted transition-colors duration-100 hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent";
+
   return (
-    <div className="mb-4 flex items-center gap-[10px]">
+    <div className="mb-4 flex items-center gap-2">
       <button
         type="button"
         onClick={() => go(-1)}
         aria-label={UI.previousDay}
-        className="grid size-11 shrink-0 place-items-center rounded-[7px] border border-control bg-card text-[15px] text-muted hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
+        className={arrow}
       >
         ‹
       </button>
@@ -45,17 +48,17 @@ export function DateBar({ selectedKey, todayK, onSelect }: Props) {
         onClick={() => go(1)}
         disabled={isToday}
         aria-label={UI.nextDay}
-        className="grid size-11 shrink-0 place-items-center rounded-[7px] border border-control bg-card text-[15px] text-muted hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent disabled:cursor-default disabled:opacity-30 disabled:hover:bg-card"
+        className={arrow}
       >
         ›
       </button>
 
-      <span className="text-[16px] font-semibold">
+      <span className="ml-1 text-base font-medium">
         {formatDayLabel(selectedKey)}
       </span>
 
       {isToday && (
-        <span className="rounded-full border border-tag-line bg-tag px-2 py-[2px] text-[11px] text-tag-ink">
+        <span className="ml-auto rounded-full bg-tag px-[9px] py-[3px] text-2xs text-tag-ink">
           {UI.todayTag}
         </span>
       )}

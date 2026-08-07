@@ -93,13 +93,13 @@ export default function SignInPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-[420px] flex-col justify-center px-5 py-10">
-      <h1 className="text-[22px] font-semibold tracking-[-0.01em]">
+      <h1 className="text-xl font-medium tracking-[-0.02em]">
         {UI.appTitle}
       </h1>
-      <p className="mt-1 mb-6 text-[13px] text-muted">{AUTH.intro}</p>
+      <p className="mt-1 mb-6 text-sm text-muted">{AUTH.intro}</p>
 
       <form onSubmit={handleSignIn}>
-        <label htmlFor="email" className="block text-[13px] text-muted">
+        <label htmlFor="email" className="block text-sm text-muted">
           {AUTH.emailLabel}
         </label>
         <input
@@ -112,10 +112,10 @@ export default function SignInPage() {
           // React calls this a "controlled input": the state is the truth,
           // and the box on screen just displays it.
           onChange={(event) => setEmail(event.target.value)}
-          className="mt-1 min-h-11 w-full rounded-[var(--radius-control)] border border-field-line bg-field px-3 text-[15px] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
+          className="mt-1 min-h-11 w-full rounded-[var(--radius-control)] border-[0.5px] border-field-line bg-field px-3 text-base text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
         />
 
-        <label htmlFor="password" className="mt-3 block text-[13px] text-muted">
+        <label htmlFor="password" className="mt-3 block text-sm text-muted">
           {AUTH.passwordLabel}
         </label>
         <input
@@ -124,13 +124,13 @@ export default function SignInPage() {
           autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="mt-1 min-h-11 w-full rounded-[var(--radius-control)] border border-field-line bg-field px-3 text-[15px] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
+          className="mt-1 min-h-11 w-full rounded-[var(--radius-control)] border-[0.5px] border-field-line bg-field px-3 text-base text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
         />
 
         <button
           type="submit"
           disabled={busy || password.length === 0}
-          className="mt-4 min-h-11 w-full rounded-[var(--radius-control)] border border-control bg-card px-3 text-[14px] text-ink hover:bg-hover disabled:opacity-40 disabled:hover:bg-card"
+          className="mt-4 min-h-11 w-full rounded-[var(--radius-control)] border-[0.5px] border-control bg-card px-3 text-base text-ink transition-colors duration-100 hover:bg-hover disabled:opacity-40 disabled:hover:bg-card"
         >
           {status === "signingIn" ? AUTH.signingInButton : AUTH.signInButton}
         </button>
@@ -141,7 +141,7 @@ export default function SignInPage() {
         type="button"
         onClick={handleSendLink}
         disabled={busy || email.length === 0}
-        className="mt-3 min-h-11 w-full rounded-[var(--radius-control)] px-3 text-[13px] text-muted hover:bg-hover disabled:opacity-40 disabled:hover:bg-transparent"
+        className="mt-3 min-h-11 w-full rounded-[var(--radius-control)] px-3 text-sm text-muted transition-colors duration-100 hover:bg-hover disabled:opacity-40 disabled:hover:bg-transparent"
       >
         {status === "sending" ? AUTH.sendingButton : AUTH.useLinkInstead}
       </button>
@@ -152,12 +152,12 @@ export default function SignInPage() {
         undefined while idle or working, so nothing shows.
       */}
       {MESSAGES[status] && (
-        <p aria-live="polite" className="mt-4 text-[13px] text-muted">
+        <p aria-live="polite" className="mt-4 text-sm text-muted">
           {MESSAGES[status]}
         </p>
       )}
 
-      <p className="mt-6 text-[11.5px] text-muted">{AUTH.noPasswordYet}</p>
+      <p className="mt-6 text-2xs text-muted">{AUTH.noPasswordYet}</p>
     </main>
   );
 }

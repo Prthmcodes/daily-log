@@ -61,10 +61,38 @@
   */
   --color-unlogged: #f5f3ef;
 
-  --radius-card: 12px;
-  --radius-control: 8px;
+  --radius-card: 14px;
+  --radius-control: 10px;
 
   --font-sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /*
+    The type scale.
+
+    Before this there were nine sizes in use — 11.5, 12.5, 13, 13.5, 15, 16,
+    22, 25 and 30 — most of them inherited from the prototype and none of them
+    related to each other. These eight are a scale, and naming them means a new
+    component picks a step rather than inventing a number.
+
+    Tailwind reads these: `--text-sm` becomes the `text-sm` class, and the
+    matching `--line-height` sets its leading.
+  */
+  --text-2xs: 11px;
+  --text-2xs--line-height: 1.4;
+  --text-xs: 12px;
+  --text-xs--line-height: 1.45;
+  --text-sm: 13px;
+  --text-sm--line-height: 1.5;
+  --text-base: 15px;
+  --text-base--line-height: 1.5;
+  --text-lg: 17px;
+  --text-lg--line-height: 1.4;
+  --text-xl: 20px;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 28px;
+  --text-2xl--line-height: 1.1;
+  --text-3xl: 40px;
+  --text-3xl--line-height: 1;
 }
 
 body {

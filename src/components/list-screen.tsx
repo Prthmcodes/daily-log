@@ -29,11 +29,11 @@ export function ListScreen({ userId }: Props) {
   const list = useList(userId);
 
   if (list.loadFailed) {
-    return <p className="text-[13px] text-muted">{UI.loadFailed}</p>;
+    return <p className="text-sm text-muted">{UI.loadFailed}</p>;
   }
 
   if (!list.todayK || !list.selectedKey) {
-    return <p className="text-[13px] text-muted">{UI.loading}</p>;
+    return <p className="text-sm text-muted">{UI.loading}</p>;
   }
 
   return (
@@ -44,7 +44,7 @@ export function ListScreen({ userId }: Props) {
         todayK={list.todayK}
       />
 
-      <section className="rounded-[var(--radius-card)] border border-line bg-card px-5 py-[18px]">
+      <section className="rounded-[var(--radius-card)] border-[0.5px] border-line bg-card px-4 py-[18px]">
         <DateBar
           selectedKey={list.selectedKey}
           todayK={list.todayK}
@@ -68,14 +68,14 @@ export function ListScreen({ userId }: Props) {
 
             <AddTask onAdd={list.add} />
 
-            <p className="mt-4 text-[13px] text-muted">
+            <p className="mt-4 text-sm text-muted">
               {MORNING_LIST.standingLine}
             </p>
           </>
         )}
 
         {list.saveFailed && (
-          <p aria-live="polite" className="mt-3 text-[13px] text-muted">
+          <p aria-live="polite" className="mt-3 text-sm text-muted">
             {UI.saveFailed}
           </p>
         )}

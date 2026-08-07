@@ -22,13 +22,13 @@ export default async function AccountPage() {
 
   return (
     <main className="mx-auto w-full max-w-[420px] px-5 py-6">
-      <h1 className="text-[22px] font-semibold tracking-[-0.01em]">
+      <h1 className="text-xl font-medium tracking-[-0.02em]">
         {UI.appTitle}
       </h1>
-      <p className="mb-[22px] text-[13px] text-muted">{ACCOUNT.heading}</p>
+      <p className="mt-0.5 mb-[18px] text-sm text-muted">{ACCOUNT.heading}</p>
 
-      <section className="rounded-[var(--radius-card)] border border-line bg-card px-5 py-[18px]">
-        <p className="mb-4 text-[13px] text-muted">
+      <section className="rounded-[var(--radius-card)] border-[0.5px] border-line bg-card px-4 py-[18px]">
+        <p className="mb-4 text-sm text-muted">
           {ACCOUNT.signedInAs} {user.email}
         </p>
 
@@ -38,7 +38,7 @@ export default async function AccountPage() {
       <div className="mt-6 flex items-center gap-4">
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center text-[13px] text-muted hover:text-ink"
+          className="inline-flex min-h-11 items-center text-sm text-muted hover:text-ink"
         >
           {ACCOUNT.backLink}
         </Link>
@@ -46,7 +46,7 @@ export default async function AccountPage() {
         <form action="/auth/sign-out" method="post">
           <button
             type="submit"
-            className="min-h-11 rounded-[var(--radius-control)] border border-control bg-card px-4 text-[13px] text-muted hover:bg-hover"
+            className="min-h-11 rounded-[var(--radius-control)] border-[0.5px] border-control bg-card px-4 text-sm text-muted transition-colors duration-100 hover:bg-hover"
           >
             {UI.signOut}
           </button>

@@ -6,7 +6,7 @@ import type { LoggedDay } from "@/lib/days";
 
 /**
  * One Tailwind class per score. Written out in full because Tailwind reads the
- * source as text to decide which classes to generate — a name built at runtime
+ * source as text to decide which CSS to generate — a name built at runtime
  * like `bg-score-${score}` would produce no CSS at all.
  *
  * Grey through to green. There is no red at the bottom end: a low score is
@@ -43,16 +43,17 @@ export function DayGrid({ endKey, loggedDays, selectedKey, onSelect }: Props) {
   const scores = new Map(loggedDays.map((day) => [day.date, day.score]));
 
   return (
-    <section className="mt-4 rounded-[var(--radius-card)] border border-line bg-card px-5 py-[18px]">
-      <h2 className="mb-[14px] text-[13px] font-semibold uppercase tracking-[0.07em] text-muted">
+    <section className="mt-3 rounded-[var(--radius-card)] border-[0.5px] border-line bg-card px-4 py-[18px]">
+      <h2 className="mb-3 text-2xs uppercase tracking-[0.09em] text-muted">
         {UI.gridHeading}
       </h2>
 
       {/*
-        Ten across on a phone and fifteen on anything wider. Fifteen columns on
-        a 390px screen gives 18px cells, which is too small to hit with a thumb.
+        Ten across, three rows. Fifteen columns — the prototype's layout —
+        works out at 18px cells on a 390px screen, which is not something you
+        can hit with a thumb.
       */}
-      <div className="grid grid-cols-[repeat(10,minmax(0,1fr))] gap-[5px] sm:grid-cols-[repeat(15,minmax(0,1fr))]">
+      <div className="grid grid-cols-[repeat(10,minmax(0,1fr))] gap-[6px]">
         {keys.map((key) => {
           const score = scores.get(key);
           const logged = score !== undefined;
@@ -70,7 +71,7 @@ export function DayGrid({ endKey, loggedDays, selectedKey, onSelect }: Props) {
               title={label}
               aria-label={label}
               aria-current={selected ? "date" : undefined}
-              className={`aspect-square rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent ${
+              className={`aspect-square rounded-[6px] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent ${
                 logged
                   ? SCORE_CLASS[score]
                   : "border border-dashed border-field-line bg-unlogged"
@@ -80,18 +81,12 @@ export function DayGrid({ endKey, loggedDays, selectedKey, onSelect }: Props) {
         })}
       </div>
 
-      <div className="mt-3 flex items-center gap-2 text-[11.5px] text-muted">
-        <span>0</span>
-        {SCORE_CLASS.map((className) => (
-          <span
-            key={className}
-            aria-hidden="true"
-            className={`inline-block size-[13px] rounded-[3px] ${className}`}
-          />
-        ))}
-        <span>5</span>
-        <span className="ml-auto">{UI.gridHint}</span>
-      </div>
+      {/*
+        The colour key that used to sit here has gone. It explained a ramp
+        that explains itself, and it was the busiest thing on an otherwise
+        quiet screen.
+      */}
+      <p className="mt-3 text-xs text-muted">{UI.gridHint}</p>
     </section>
   );
 }

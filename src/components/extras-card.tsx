@@ -66,9 +66,12 @@ export function ExtrasCard({ userId, dateKey }: Props) {
     }
   }
 
+  const stepper =
+    "grid size-8 place-items-center rounded-[8px] text-lg text-muted transition-colors duration-100 hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent disabled:opacity-30 disabled:hover:bg-transparent";
+
   return (
-    <section className="mt-4 rounded-[var(--radius-card)] border border-line bg-card px-5 py-[18px]">
-      <h2 className="mb-[14px] text-[13px] font-semibold uppercase tracking-[0.07em] text-muted">
+    <section className="mt-3 rounded-[var(--radius-card)] border-[0.5px] border-line bg-card px-4 py-[18px]">
+      <h2 className="mb-3 text-2xs uppercase tracking-[0.09em] text-muted">
         {EXTRAS.heading}
       </h2>
 
@@ -77,6 +80,9 @@ export function ExtrasCard({ userId, dateKey }: Props) {
         helper={EXTRAS.noReels.helper}
         ticked={extras.noReels}
         disabled={loading}
+        // Grey, not green. These are not scored, and a green tick would say
+        // otherwise (spec 6.6).
+        tone="muted"
         onToggle={() => save({ ...extras, noReels: !extras.noReels })}
       />
 
@@ -85,59 +91,66 @@ export function ExtrasCard({ userId, dateKey }: Props) {
         helper={EXTRAS.readSomething.helper}
         ticked={extras.readSomething}
         disabled={loading}
+        tone="muted"
         onToggle={() =>
           save({ ...extras, readSomething: !extras.readSomething })
         }
       />
 
-      <div className="mt-[14px] flex items-center gap-3 border-t border-rule pt-[14px]">
+      <div className="mt-3 flex items-center gap-3 border-t-[0.5px] border-rule pt-3">
         <div className="flex-1">
-          <div className="font-medium">{EXTRAS.studyLabel}</div>
-          <div className="mt-px text-[12.5px] text-muted">
-            {EXTRAS.studyHelper}
-          </div>
+          <div className="text-base font-medium">{EXTRAS.studyLabel}</div>
+          <div className="mt-px text-sm text-muted">{EXTRAS.studyHelper}</div>
         </div>
 
-        <button
-          type="button"
-          onClick={() =>
-            save({ ...extras, studyBlocks: adjustBlocks(extras.studyBlocks, -1) })
-          }
-          disabled={loading || extras.studyBlocks === 0}
-          aria-label={EXTRAS.removeBlock}
-          className="grid size-11 shrink-0 place-items-center rounded-[var(--radius-control)] border border-control bg-card text-[18px] text-muted hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent disabled:opacity-30 disabled:hover:bg-card"
-        >
-          −
-        </button>
+        {/* One grouped control rather than three loose buttons. */}
+        <div className="flex shrink-0 items-center gap-1 rounded-[var(--radius-control)] border-[0.5px] border-control p-[3px]">
+          <button
+            type="button"
+            onClick={() =>
+              save({
+                ...extras,
+                studyBlocks: adjustBlocks(extras.studyBlocks, -1),
+              })
+            }
+            disabled={loading || extras.studyBlocks === 0}
+            aria-label={EXTRAS.removeBlock}
+            className={stepper}
+          >
+            −
+          </button>
 
-        {/*
-          Today's number and nothing else. No average, no history, nothing to
-          compare it against — a fact rather than a score. `aria-live` reads it
-          out when it changes, since the buttons themselves do not say what it
-          became.
-        */}
-        <span
-          aria-live="polite"
-          className="min-w-8 text-center text-[25px] font-semibold tracking-[-0.02em] tabular-nums"
-        >
-          {extras.studyBlocks}
-        </span>
+          {/*
+            Today's number and nothing else. No average, no history, nothing to
+            compare it against — a fact rather than a score. `aria-live` reads
+            it out when it changes, since the buttons do not say what it became.
+          */}
+          <span
+            aria-live="polite"
+            className="min-w-7 text-center text-xl font-medium tabular-nums"
+          >
+            {extras.studyBlocks}
+          </span>
 
-        <button
-          type="button"
-          onClick={() =>
-            save({ ...extras, studyBlocks: adjustBlocks(extras.studyBlocks, 1) })
-          }
-          disabled={loading}
-          aria-label={EXTRAS.addBlock}
-          className="grid size-11 shrink-0 place-items-center rounded-[var(--radius-control)] border border-control bg-card text-[18px] text-muted hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent disabled:opacity-30 disabled:hover:bg-card"
-        >
-          +
-        </button>
+          <button
+            type="button"
+            onClick={() =>
+              save({
+                ...extras,
+                studyBlocks: adjustBlocks(extras.studyBlocks, 1),
+              })
+            }
+            disabled={loading}
+            aria-label={EXTRAS.addBlock}
+            className={stepper}
+          >
+            +
+          </button>
+        </div>
       </div>
 
       {failed && (
-        <p aria-live="polite" className="mt-3 text-[13px] text-muted">
+        <p aria-live="polite" className="mt-3 text-sm text-muted">
           {UI.saveFailed}
         </p>
       )}

@@ -44,31 +44,39 @@ export function MarksCard({
         ))}
       </div>
 
-      <div className="mt-[14px] flex items-baseline gap-[14px] border-t border-rule pt-[14px]">
-        <div className="text-[30px] font-semibold tracking-[-0.02em]">
+      {/*
+        The score gets its own line and the largest type on the screen. It is
+        the thing being measured, and at the prototype's 30px — wedged between
+        a "/5" and a button — it read like a footnote on itself.
+      */}
+      <div className="mt-4 flex items-end gap-[14px] border-t border-[0.5px] border-rule pt-4">
+        <div className="text-3xl font-medium tracking-[-0.03em]">
           {score}
-          <span className="text-[15px] font-medium text-muted">/5</span>
+          <span className="text-lg font-normal text-muted">/5</span>
         </div>
-        <div className="text-[13px] text-muted">{SCORE_LABELS[score]}</div>
-
-        {/* Only offered while there is no row. Once the day is logged there is
-            nothing left for this button to do. */}
-        {!isLogged && !busy && (
-          <button
-            type="button"
-            onClick={onLogZero}
-            className="ml-auto min-h-11 shrink-0 whitespace-nowrap rounded-[var(--radius-control)] border border-control bg-card px-[11px] text-[12.5px] text-muted hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
-          >
-            {UI.logZeroButton}
-          </button>
-        )}
+        <div className="pb-1 text-sm text-muted">{SCORE_LABELS[score]}</div>
       </div>
 
       {/* aria-live tells a screen reader to announce this when it appears. */}
       {saveFailed && (
-        <p aria-live="polite" className="mt-3 text-[13px] text-muted">
+        <p aria-live="polite" className="mt-3 text-sm text-muted">
           {UI.saveFailed}
         </p>
+      )}
+
+      {/*
+        Below the score rather than beside it. In the score row it competed
+        with the label for the same space and won, on a screen where the label
+        is the part doing the work.
+      */}
+      {!isLogged && !busy && (
+        <button
+          type="button"
+          onClick={onLogZero}
+          className="mt-3 min-h-11 w-full rounded-[var(--radius-control)] border-[0.5px] border-control bg-card px-4 text-sm text-muted transition-colors duration-100 hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
+        >
+          {UI.logZeroButton}
+        </button>
       )}
     </>
   );

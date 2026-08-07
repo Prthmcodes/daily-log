@@ -26,11 +26,11 @@ export function TodayScreen({ userId }: Props) {
   const day = useToday(userId);
 
   if (day.loadFailed) {
-    return <p className="text-[13px] text-muted">{UI.loadFailed}</p>;
+    return <p className="text-sm text-muted">{UI.loadFailed}</p>;
   }
 
   if (!day.todayK || !day.selectedKey) {
-    return <p className="text-[13px] text-muted">{UI.loading}</p>;
+    return <p className="text-sm text-muted">{UI.loading}</p>;
   }
 
   return (
@@ -41,7 +41,7 @@ export function TodayScreen({ userId }: Props) {
         todayK={day.todayK}
       />
 
-      <section className="rounded-[var(--radius-card)] border border-line bg-card px-5 py-[18px]">
+      <section className="rounded-[var(--radius-card)] border-[0.5px] border-line bg-card px-4 py-[18px]">
         <DateBar
           selectedKey={day.selectedKey}
           todayK={day.todayK}

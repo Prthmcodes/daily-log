@@ -93,22 +93,22 @@ export default function ConfirmPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-[420px] flex-col justify-center px-5 py-10">
-      <h1 className="text-[22px] font-semibold tracking-[-0.01em]">
+      <h1 className="text-xl font-medium tracking-[-0.02em]">
         {UI.appTitle}
       </h1>
 
       {failed ? (
         <>
-          <p className="mt-2 text-[13px] text-muted">{AUTH.linkExpired}</p>
+          <p className="mt-2 text-sm text-muted">{AUTH.linkExpired}</p>
           <a
             href="/sign-in"
-            className="mt-4 inline-flex min-h-11 items-center justify-center rounded-[var(--radius-control)] border border-control bg-card px-4 text-[14px] text-ink hover:bg-hover"
+            className="mt-4 inline-flex min-h-11 items-center justify-center rounded-[var(--radius-control)] border-[0.5px] border-control bg-card px-4 text-base text-ink transition-colors duration-100 hover:bg-hover"
           >
             {AUTH.sendButton}
           </a>
         </>
       ) : (
-        <p className="mt-2 text-[13px] text-muted">{AUTH.signingIn}</p>
+        <p className="mt-2 text-sm text-muted">{AUTH.signingIn}</p>
       )}
     </main>
   );

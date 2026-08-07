@@ -22,13 +22,13 @@ type Props = {
  */
 export function TaskRow({ task, onToggle, onDelete }: Props) {
   return (
-    <li className="flex items-start gap-1 border-b border-rule last:border-b-0">
+    <li className="flex items-start gap-1 border-b-[0.5px] border-rule last:border-b-0">
       <button
         type="button"
         role="checkbox"
         aria-checked={task.done}
         onClick={onToggle}
-        className="flex min-h-11 flex-1 items-start gap-3 rounded-[9px] px-2 py-[11px] text-left hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+        className="flex min-h-11 flex-1 items-start gap-3 rounded-[10px] px-2 py-[11px] text-left transition-colors duration-100 hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
       >
         <span
           // aria-hidden because the button already announces its own state;
@@ -38,7 +38,7 @@ export function TaskRow({ task, onToggle, onDelete }: Props) {
           // Spec 6.6 rules out a green tick here explicitly: green would make
           // finishing a task an achievement, and the moment a tick is worth
           // something, an untick starts being worth something too.
-          className={`mt-px grid size-5 shrink-0 place-items-center rounded-[5px] border-[1.5px] text-[13px] text-white ${
+          className={`mt-px grid size-[21px] shrink-0 place-items-center rounded-[6px] border-[1.5px] text-sm text-white ${
             task.done ? "border-muted bg-muted" : "border-box bg-card"
           }`}
         >
@@ -46,7 +46,7 @@ export function TaskRow({ task, onToggle, onDelete }: Props) {
         </span>
 
         <span
-          className={`text-[14px] ${
+          className={`text-base ${
             task.done ? "text-muted line-through" : "text-ink"
           }`}
         >
@@ -58,7 +58,7 @@ export function TaskRow({ task, onToggle, onDelete }: Props) {
         type="button"
         onClick={onDelete}
         aria-label={`${MORNING_LIST.deleteTaskLabel}: ${task.text}`}
-        className="grid size-11 shrink-0 place-items-center rounded-[9px] text-[15px] text-muted hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+        className="grid size-11 shrink-0 place-items-center rounded-[10px] text-base text-muted transition-colors duration-100 hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
       >
         ×
       </button>

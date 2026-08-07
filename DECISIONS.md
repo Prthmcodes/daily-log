@@ -563,3 +563,41 @@ the leaked-password check, which is a dashboard toggle and appeared because the
 app now accepts passwords.
 
 **Not verifiable from here, and left to a real device:** the two ritual timings.
+
+## Visual refinement
+
+The palette did not change. Every colour is still one of the 6.6 tokens or a
+shade carried over from the prototype, and no design rule moved. What changed
+is craft.
+
+**A named type scale replaced nine arbitrary sizes.** The app was using 11.5,
+12.5, 13, 13.5, 15, 16, 22, 25 and 30px, most inherited from the prototype and
+none related to each other. `globals.css` now defines eight steps — 11, 12, 13,
+15, 17, 20, 28, 40 — as Tailwind text sizes, so a new component picks a step
+instead of inventing a number. No `text-[13.5px]` survives anywhere.
+
+**Weights are 400 and 500 only.** The prototype used 550 and 650, which are not
+real weights in most system fonts and get synthesised inconsistently.
+
+**Hairlines at 0.5px, radii at 14px cards and 10px controls.** At 1px every
+card read as a box; at 0.5px they read as paper, which is the stated aim.
+
+**The score is the largest thing on the screen** at 40px, on its own line with
+the label beside it. At 30px, wedged between a `/5` and a button, the number the
+app exists to produce looked like a footnote on itself.
+
+**"Log this day as 0" moved below the score row.** In the row it competed with
+the score label for the same horizontal space and won, on a screen where the
+label is the part doing the work.
+
+**The grid legend is gone and the grid is ten columns.** The `0 ▪▪▪▪▪▪ 5` strip
+explained a ramp that explains itself and was the busiest thing on a quiet
+screen. Ten columns also lifts the cells from 18px to about 31px, which was the
+touch-target problem flagged in Chunk 9.
+
+**The extras stepper is one grouped control** rather than three loose elements,
+and its ticks are grey rather than green — `MarkToggle` gained a `tone` prop for
+exactly that, since spec 6.6 rules out a green tick on anything unscored.
+
+**Transitions are 100ms colour fades on hover only.** Not celebratory, nothing
+moves, and the existing `prefers-reduced-motion` block still overrides them.

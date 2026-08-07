@@ -10,7 +10,7 @@ import { REFRAME_BANNER } from "@/lib/copy";
  */
 export function ReframeBanner() {
   return (
-    <p className="mb-[18px] rounded-[var(--radius-card)] bg-banner px-[18px] py-[14px] text-[14px] leading-[1.55] text-white">
+    <p className="mt-[18px] rounded-[var(--radius-card)] bg-banner px-[18px] py-4 text-base leading-[1.6] text-white">
       {REFRAME_BANNER.map((segment, index) =>
         segment.emphasis ? (
           // Using the position as the key is normally a bad habit, because a

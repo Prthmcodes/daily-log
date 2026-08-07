@@ -29,10 +29,10 @@ export default async function TodayPage() {
 
   return (
     <main className="mx-auto w-full max-w-[760px] px-5 py-6">
-      <h1 className="text-[22px] font-semibold tracking-[-0.01em]">
+      <h1 className="text-xl font-medium tracking-[-0.02em]">
         {UI.appTitle}
       </h1>
-      <p className="mb-[22px] text-[13px] text-muted">{UI.subtitle}</p>
+      <p className="mt-0.5 text-sm text-muted">{UI.subtitle}</p>
 
       {/* Above the marks, so it is read before the day is scored. */}
       <ReframeBanner />
@@ -41,10 +41,10 @@ export default async function TodayPage() {
 
       <Protocol />
 
-      <div className="mt-6 flex items-center gap-4">
+      <div className="mt-4 flex items-center gap-4">
         <Link
           href="/account"
-          className="inline-flex min-h-11 items-center text-[13px] text-muted hover:text-ink"
+          className="inline-flex min-h-11 items-center text-sm text-muted hover:text-ink"
         >
           {UI.accountLink}
         </Link>
@@ -52,7 +52,7 @@ export default async function TodayPage() {
         <form action="/auth/sign-out" method="post">
           <button
             type="submit"
-            className="min-h-11 rounded-[var(--radius-control)] border border-control bg-card px-4 text-[13px] text-muted hover:bg-hover"
+            className="min-h-11 rounded-[var(--radius-control)] border-[0.5px] border-control bg-card px-4 text-sm text-muted transition-colors duration-100 hover:bg-hover"
           >
             {UI.signOut}
           </button>

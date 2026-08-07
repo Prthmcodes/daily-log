@@ -14,16 +14,16 @@ import { PROTOCOL, UI } from "@/lib/copy";
  */
 export function Protocol() {
   return (
-    <section className="mt-4 rounded-[var(--radius-card)] border border-line bg-card px-5 py-[18px]">
-      <h2 className="mb-[14px] text-[13px] font-semibold uppercase tracking-[0.07em] text-muted">
+    <section className="mt-3 rounded-[var(--radius-card)] border-[0.5px] border-line bg-card px-4 py-[18px]">
+      <h2 className="mb-3 text-2xs uppercase tracking-[0.09em] text-muted">
         {UI.protocolHeading}
       </h2>
 
       <ol className="list-decimal pl-5">
         {PROTOCOL.map((rule) => (
           <li key={rule.title} className="mb-[11px] last:mb-0">
-            <strong className="block font-medium">{rule.title}</strong>
-            <span className="text-[13.5px] text-muted">{rule.body}</span>
+            <strong className="block text-base font-medium">{rule.title}</strong>
+            <span className="text-sm text-muted">{rule.body}</span>
           </li>
         ))}
       </ol>

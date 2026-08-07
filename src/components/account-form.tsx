@@ -52,7 +52,7 @@ export function AccountForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="password" className="block text-[13px] text-muted">
+      <label htmlFor="password" className="block text-sm text-muted">
         {ACCOUNT.passwordLabel}
       </label>
 
@@ -66,21 +66,21 @@ export function AccountForm() {
           // Clear the previous message as soon as it stops being true.
           setStatus("idle");
         }}
-        className="mt-1 min-h-11 w-full rounded-[var(--radius-control)] border border-field-line bg-field px-3 text-[15px] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
+        className="mt-1 min-h-11 w-full rounded-[var(--radius-control)] border-[0.5px] border-field-line bg-field px-3 text-base text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
       />
 
-      <p className="mt-2 text-[11.5px] text-muted">{ACCOUNT.passwordHint}</p>
+      <p className="mt-2 text-2xs text-muted">{ACCOUNT.passwordHint}</p>
 
       <button
         type="submit"
         disabled={status === "saving" || password.length === 0}
-        className="mt-3 min-h-11 rounded-[var(--radius-control)] border border-control bg-card px-4 text-[14px] text-ink hover:bg-hover disabled:opacity-40 disabled:hover:bg-card"
+        className="mt-3 min-h-11 rounded-[var(--radius-control)] border-[0.5px] border-control bg-card px-4 text-base text-ink transition-colors duration-100 hover:bg-hover disabled:opacity-40 disabled:hover:bg-card"
       >
         {status === "saving" ? ACCOUNT.saving : ACCOUNT.saveButton}
       </button>
 
       {MESSAGES[status] && (
-        <p aria-live="polite" className="mt-3 text-[13px] text-muted">
+        <p aria-live="polite" className="mt-3 text-sm text-muted">
           {MESSAGES[status]}
         </p>
       )}

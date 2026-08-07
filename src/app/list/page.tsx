@@ -27,10 +27,10 @@ export default async function ListPage() {
 
   return (
     <main className="mx-auto w-full max-w-[760px] px-5 py-6">
-      <h1 className="text-[22px] font-semibold tracking-[-0.01em]">
+      <h1 className="text-xl font-medium tracking-[-0.02em]">
         {UI.appTitle}
       </h1>
-      <p className="mb-[22px] text-[13px] text-muted">{MORNING_LIST.heading}</p>
+      <p className="mt-0.5 mb-[18px] text-sm text-muted">{MORNING_LIST.heading}</p>
 
       <ListScreen userId={user.id} />
     </main>

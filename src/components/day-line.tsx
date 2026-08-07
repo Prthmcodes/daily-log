@@ -111,7 +111,7 @@ export function DayLine({ userId, dateKey, initialNote, onSaved }: Props) {
   }
 
   return (
-    <div className="mt-3">
+    <div className="mt-4">
       <textarea
         ref={textareaRef}
         rows={2}
@@ -119,7 +119,7 @@ export function DayLine({ userId, dateKey, initialNote, onSaved }: Props) {
         onChange={handleChange}
         aria-label={DAY_LINE.label}
         placeholder={DAY_LINE.placeholder}
-        className="w-full resize-none overflow-y-auto rounded-[var(--radius-control)] border border-field-line bg-field px-[11px] py-[9px] text-[13.5px] leading-[1.55] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
+        className="w-full resize-none overflow-y-auto rounded-[var(--radius-control)] border-[0.5px] border-field-line bg-field px-3 py-[10px] text-base leading-[1.5] text-ink focus:outline-2 focus:outline-offset-[-1px] focus:outline-tag-line"
       />
 
       {/*
@@ -127,7 +127,7 @@ export function DayLine({ userId, dateKey, initialNote, onSaved }: Props) {
         appears. aria-live lets a screen reader announce it without stealing
         focus mid-sentence.
       */}
-      <div aria-live="polite" className="h-4 text-[11.5px] text-muted">
+      <div aria-live="polite" className="h-4 text-2xs text-muted">
         {failed ? UI.saveFailed : saved ? DAY_LINE.savedIndicator : ""}
       </div>
     </div>

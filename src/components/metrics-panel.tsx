@@ -25,26 +25,27 @@ export function MetricsPanel({ sevenDay, thirtyDay, daysLogged, stale }: Props) 
   ];
 
   return (
-    <section className="mt-4 rounded-[var(--radius-card)] border border-line bg-card px-5 py-[18px]">
-      <h2 className="mb-[14px] text-[13px] font-semibold uppercase tracking-[0.07em] text-muted">
-        {UI.metricsHeading}
-      </h2>
-
-      <div className="grid grid-cols-3 gap-3">
-        {metrics.map((metric) => (
-          <div key={metric.label} className="py-1 text-center">
-            <div className="text-[25px] font-semibold tracking-[-0.02em]">
+    <section className="mt-3 rounded-[var(--radius-card)] border-[0.5px] border-line bg-card px-4 py-[18px]">
+      <div className="flex">
+        {metrics.map((metric, index) => (
+          <div
+            key={metric.label}
+            // Hairline dividers instead of gaps, so the three read as one
+            // group rather than three floating numbers.
+            className={`flex-1 text-center ${
+              index === 1 ? "border-x-[0.5px] border-rule" : ""
+            }`}
+          >
+            <div className="text-2xl font-medium tracking-[-0.02em]">
               {metric.value}
             </div>
-            <div className="mt-0.5 text-[11.5px] text-muted">
-              {metric.label}
-            </div>
+            <div className="mt-0.5 text-xs text-muted">{metric.label}</div>
           </div>
         ))}
       </div>
 
       {stale && (
-        <p aria-live="polite" className="mt-3 text-[11.5px] text-muted">
+        <p aria-live="polite" className="mt-3 text-xs text-muted">
           {UI.metricsStale}
         </p>
       )}
