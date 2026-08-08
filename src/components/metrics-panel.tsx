@@ -36,7 +36,7 @@ export function MetricsPanel({ sevenDay, thirtyDay, daysLogged, stale }: Props) 
               index === 1 ? "border-x-[0.5px] border-rule" : ""
             }`}
           >
-            <div className="text-2xl font-medium tracking-[-0.02em]">
+            <div className="font-serif text-2xl tracking-[-0.02em] tabular-nums">
               {metric.value}
             </div>
             <div className="mt-0.5 text-xs text-muted">{metric.label}</div>

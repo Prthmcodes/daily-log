@@ -601,3 +601,40 @@ exactly that, since spec 6.6 rules out a green tick on anything unscored.
 
 **Transitions are 100ms colour fades on hover only.** Not celebratory, nothing
 moves, and the existing `prefers-reduced-motion` block still overrides them.
+
+## Visual refinement, second pass — the ledger
+
+Asked for something "3D, a proper crazy website". That was pushed back on and
+the middle option taken instead: distinctly designed, still inside every rule.
+The reasoning is worth keeping, because the request will come again.
+
+Rule 5 rules out celebratory animation and 6.6 asks for "a notebook, not a
+fitness tracker", but the decisive one is **rule 9: the app must not become the
+new avoidance project.** The behaviour this app treats is avoidance through
+absorbing, low-value activity, and a WebGL build is weeks of genuinely
+absorbing work on a tool whose whole job takes ninety seconds a day. There is
+also a design argument: the day you slip before noon is the day you have to be
+willing to open it, and a screen that performs at you raises the stakes of
+opening it. Plain is what makes a two out of five survivable.
+
+So: a ledger rather than a notepad.
+
+**A system serif for every numeral and the wordmark.** Numbers here are
+measurements, and setting them apart from the interface is what a ledger does.
+`--font-serif` is a system stack — `ui-serif` picks New York on Apple and
+Georgia on Windows — rather than a web font, because a download would delay the
+most important thing on the screen and this has to open instantly on a phone.
+Figures are `tabular-nums`, so the score does not shift width between 3 and 4.
+
+**Ruled rows, edge to edge.** Each mark sits between hairlines that run the
+full width of the card, which is why `MarkToggle` carries `-mx-4 px-4`: the
+negative margin cancels the card's padding so the rule reaches both edges, and
+the padding puts the content back. The ticked wash now fills the whole row
+rather than a rounded pill, which is what makes it read as a ruled line rather
+than a highlighted button.
+
+**The score is baseline-aligned with its label** at 40px in the serif, so the
+number and the sentence about it sit on one line rather than the label floating
+somewhere beside it.
+
+None of this adds a request, a dependency, or a frame of animation.

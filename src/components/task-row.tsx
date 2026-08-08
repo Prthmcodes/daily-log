@@ -28,7 +28,7 @@ export function TaskRow({ task, onToggle, onDelete }: Props) {
         role="checkbox"
         aria-checked={task.done}
         onClick={onToggle}
-        className="flex min-h-11 flex-1 items-start gap-3 rounded-[10px] px-2 py-[11px] text-left transition-colors duration-100 hover:bg-row-hover focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+        className="flex min-h-11 flex-1 items-start gap-3 px-1 py-3 text-left transition-colors duration-100 hover:bg-row-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
       >
         <span
           // aria-hidden because the button already announces its own state;

@@ -23,8 +23,12 @@ type Props = {
  * `role="switch"` with `aria-checked` says "this is a two-state control and it
  * is currently on", which is exactly what it is.
  *
- * The whole row is the target, and it clears the 44px minimum for something
- * you tap with a thumb.
+ * The row runs the full width of the card, edge to edge, separated by a
+ * hairline — the ruling of a ledger. That is why it carries `-mx-4 px-4`: the
+ * negative margin cancels the card's padding so the rule reaches both edges,
+ * and the padding puts the content back where it belongs.
+ *
+ * The whole row is the target, and it clears the 44px minimum for a thumb.
  */
 export function MarkToggle({
   label,
@@ -44,7 +48,7 @@ export function MarkToggle({
       aria-checked={ticked}
       disabled={disabled}
       onClick={onToggle}
-      className={`flex min-h-11 w-full items-start gap-3 rounded-[10px] px-[10px] py-[10px] text-left transition-colors duration-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent ${
+      className={`-mx-4 flex min-h-11 w-[calc(100%+2rem)] items-start gap-3 border-b-[0.5px] border-rule px-4 py-3 text-left transition-colors duration-100 last:border-b-0 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent ${
         ticked ? "bg-on" : "hover:bg-row-hover"
       }`}
     >

@@ -93,7 +93,7 @@ export default function SignInPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-[420px] flex-col justify-center px-5 py-10">
-      <h1 className="text-xl font-medium tracking-[-0.02em]">
+      <h1 className="font-serif text-2xl tracking-[-0.01em]">
         {UI.appTitle}
       </h1>
       <p className="mt-1 mb-6 text-sm text-muted">{AUTH.intro}</p>

@@ -75,6 +75,8 @@ export function ExtrasCard({ userId, dateKey }: Props) {
         {EXTRAS.heading}
       </h2>
 
+      <div className="border-t-[0.5px] border-rule" />
+
       <MarkToggle
         label={EXTRAS.noReels.label}
         helper={EXTRAS.noReels.helper}
@@ -97,7 +99,7 @@ export function ExtrasCard({ userId, dateKey }: Props) {
         }
       />
 
-      <div className="mt-3 flex items-center gap-3 border-t-[0.5px] border-rule pt-3">
+      <div className="mt-4 flex items-center gap-3">
         <div className="flex-1">
           <div className="text-base font-medium">{EXTRAS.studyLabel}</div>
           <div className="mt-px text-sm text-muted">{EXTRAS.studyHelper}</div>
@@ -127,7 +129,7 @@ export function ExtrasCard({ userId, dateKey }: Props) {
           */}
           <span
             aria-live="polite"
-            className="min-w-7 text-center text-xl font-medium tabular-nums"
+            className="min-w-7 text-center font-serif text-xl tabular-nums"
           >
             {extras.studyBlocks}
           </span>

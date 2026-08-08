@@ -29,7 +29,7 @@ export default async function TodayPage() {
 
   return (
     <main className="mx-auto w-full max-w-[760px] px-5 py-6">
-      <h1 className="text-xl font-medium tracking-[-0.02em]">
+      <h1 className="font-serif text-2xl tracking-[-0.01em]">
         {UI.appTitle}
       </h1>
       <p className="mt-0.5 text-sm text-muted">{UI.subtitle}</p>

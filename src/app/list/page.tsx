@@ -27,7 +27,7 @@ export default async function ListPage() {
 
   return (
     <main className="mx-auto w-full max-w-[760px] px-5 py-6">
-      <h1 className="text-xl font-medium tracking-[-0.02em]">
+      <h1 className="font-serif text-2xl tracking-[-0.01em]">
         {UI.appTitle}
       </h1>
       <p className="mt-0.5 mb-[18px] text-sm text-muted">{MORNING_LIST.heading}</p>
