@@ -48,6 +48,17 @@ export function ScreenNav({ current, selectedKey, todayK }: Props) {
       >
         {UI.listScreenLink}
       </Link>
+
+      {/*
+        The work board takes no date. It is a standing backlog rather than a
+        record of a day, so it has nothing to carry across.
+      */}
+      <Link
+        href="/work"
+        className={`${base} text-muted hover:text-ink`}
+      >
+        {UI.workScreenLink}
+      </Link>
     </nav>
   );
 }

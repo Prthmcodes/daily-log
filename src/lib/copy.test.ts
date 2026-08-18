@@ -164,7 +164,7 @@ describe("the morning list", () => {
   it("contains no number, fraction or percentage anywhere", () => {
     for (const [name, text] of Object.entries(MORNING_LIST)) {
       expect(text, `MORNING_LIST.${name}`).not.toMatch(/\d|%/);
-      expect(text, `MORNING_LIST.${name}`).not.toMatch(/\bof\b/);
+      expect(text, `MORNING_LIST.${name}`).not.toMatch(/\bout of\b/);
     }
   });
 });

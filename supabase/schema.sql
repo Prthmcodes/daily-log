@@ -145,3 +145,32 @@ create index thresholds_user_position_idx on public.thresholds (user_id, positio
 create trigger thresholds_set_updated_at
   before update on public.thresholds
   for each row execute function public.set_updated_at();
+
+-- A standing backlog, sorted by how much it matters.
+--
+-- Emphatically NOT the morning list, and in a separate table so it can never
+-- become one. The morning list belongs to a single day, does not roll over,
+-- and carries no count. This is the opposite kind of object: things that
+-- persist until done, hence no `date` column.
+create table public.work_items (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  bucket     text not null check (bucket in ('emergency', 'important', 'unimportant')),
+  text       text not null,
+  done       boolean not null default false,
+  position   int not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.work_items enable row level security;
+
+create policy "own rows" on public.work_items
+  for all using ((select auth.uid()) = user_id)
+  with check ((select auth.uid()) = user_id);
+
+create index work_items_user_bucket_idx on public.work_items (user_id, bucket, position);
+
+create trigger work_items_set_updated_at
+  before update on public.work_items
+  for each row execute function public.set_updated_at();

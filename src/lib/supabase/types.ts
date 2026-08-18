@@ -28,6 +28,12 @@ export type ExtrasRow = Database["public"]["Tables"]["extras"]["Row"];
  */
 export type ThresholdRow = Database["public"]["Tables"]["thresholds"]["Row"];
 
+/**
+ * One thing on the work board. Persists until done — unlike a task, which
+ * belongs to a single day. See src/lib/work.ts for why they are separate.
+ */
+export type WorkItemRow = Database["public"]["Tables"]["work_items"]["Row"];
+
 /** One line of the morning list. */
 export type TaskRow = Database["public"]["Tables"]["tasks"]["Row"];
 export type TaskInsert = Database["public"]["Tables"]["tasks"]["Insert"];

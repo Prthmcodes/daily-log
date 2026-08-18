@@ -109,6 +109,39 @@ export type Database = {
         };
         Relationships: [];
       };
+      work_items: {
+        Row: {
+          bucket: string;
+          created_at: string;
+          done: boolean;
+          id: string;
+          position: number;
+          text: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          bucket: string;
+          created_at?: string;
+          done?: boolean;
+          id?: string;
+          position: number;
+          text: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          bucket?: string;
+          created_at?: string;
+          done?: boolean;
+          id?: string;
+          position?: number;
+          text?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       thresholds: {
         Row: {
           created_at: string;

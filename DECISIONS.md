@@ -685,3 +685,44 @@ edges written, `days` still empty.
 **The read-only card is a server component,** like the banner and the protocol.
 It is the part you want on screen at the moment the urge arrives, and that
 moment does not wait for a JavaScript bundle.
+
+## Chunk 17 — The work board
+
+Emergency, important, unimportant. Asked for twice; flagged as conflicting with
+Section 8 ("priorities" is named as out of scope) and with rule 10, then built
+in the shape that keeps both intact.
+
+**A separate table and a separate route, with no path to the morning list.**
+That separation is the entire safety argument. A task on the morning list
+belongs to one day, does not roll over, and is never counted — because a
+fraction of the day's intentions is a grade. A work item persists until it is
+done. Bolted together they would have produced a running total of undone work
+sitting beside the day's score, which is precisely the shape rule 10 exists to
+prevent. Proved: four items added and one ticked left `days` and `tasks` both
+empty.
+
+**No count anywhere, and no colour coding by urgency.** Red for "emergency" is
+the obvious move and it is ruled out — the palette runs grey to green so that
+nothing on any screen shouts (rule 4). The ordering carries the meaning:
+emergency is at the top because that is where you look first. A bucket with
+nine things and a bucket with one differ only in how far down the page they go.
+
+**Position is per bucket, not per board.** Moving something into a bucket has
+to land it at the bottom of *that* bucket; a board-wide counter would drop it
+somewhere in the middle. Tested both in unit tests and against the database.
+
+**Moving between buckets is a plain `<select>`.** One control, keyboard and
+screen-reader support for free, and the native picker on a phone — all things a
+row of custom buttons would have had to earn.
+
+**A CHECK constraint rather than an enum,** so a fourth bucket is a one-line
+migration. `isBucket` guards the client side so a stale value never reaches the
+database, where it would surface as a much worse error. Verified: writing
+bucket "urgent" returns 23514.
+
+**A test guard was wrong and is now right.** The rule-10 copy guard banned the
+bare word "of" to catch "3 of 8". It failed on "None of this is scored" — the
+very sentence that stops the board becoming a scoreboard. Digits and percent
+signs are already banned outright, so the pattern is now "out of". The same
+over-broad guard was quietly sitting in the morning-list test, passing only
+because no string there happens to contain "of"; both are fixed.

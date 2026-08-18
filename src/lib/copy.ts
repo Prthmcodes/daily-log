@@ -180,6 +180,37 @@ export const EXTRAS = {
 } as const;
 
 /* ------------------------------------------------------------------ *
+ * The work board
+ * ------------------------------------------------------------------ */
+
+/**
+ * Three buckets of things that need doing.
+ *
+ * Its own screen, deliberately far from the morning list. The list is one
+ * day's intentions and carries no number; this is a standing backlog. Keeping
+ * the words apart is part of keeping the ideas apart.
+ *
+ * Note what is absent: any count, any "3 emergency", any progress. A bucket
+ * with nine things in it and a bucket with one look the same apart from their
+ * length, which is the only honest difference.
+ */
+export const WORK = {
+  heading: "Work",
+  buckets: {
+    emergency: "Emergency",
+    important: "Important",
+    unimportant: "Unimportant",
+  },
+  addPlaceholder: "Add something",
+  addButton: "Add",
+  moveLabel: "Move to",
+  deleteLabel: "Delete",
+  emptyBucket: "Nothing here.",
+  standingLine:
+    "None of this is scored. Move things between the lists when they change.",
+} as const;
+
+/* ------------------------------------------------------------------ *
  * The threshold plan
  * ------------------------------------------------------------------ */
 
@@ -328,6 +359,7 @@ export const UI = {
   signOut: "Sign out",
   accountLink: "Account",
   thresholdsLink: "Edges",
+  workScreenLink: "Work",
 } as const;
 
 /**
