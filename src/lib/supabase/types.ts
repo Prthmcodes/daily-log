@@ -22,6 +22,12 @@ export type DayUpdate = Database["public"]["Tables"]["days"]["Update"];
  */
 export type ExtrasRow = Database["public"]["Tables"]["extras"]["Row"];
 
+/**
+ * One named edge: a cue you know is coming, and what happens at it.
+ * Standing rather than daily — see src/lib/thresholds.ts.
+ */
+export type ThresholdRow = Database["public"]["Tables"]["thresholds"]["Row"];
+
 /** One line of the morning list. */
 export type TaskRow = Database["public"]["Tables"]["tasks"]["Row"];
 export type TaskInsert = Database["public"]["Tables"]["tasks"]["Insert"];

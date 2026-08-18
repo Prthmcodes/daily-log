@@ -180,6 +180,41 @@ export const EXTRAS = {
 } as const;
 
 /* ------------------------------------------------------------------ *
+ * The threshold plan
+ * ------------------------------------------------------------------ */
+
+/**
+ * What happens at the edges.
+ *
+ * Everything else here records what happened. This is the only part that
+ * points forward, and the only part written in the user's own words rather
+ * than fixed in this file — which is why there is so little copy for it.
+ *
+ * The two-part form is deliberate. A cue with no intention is a worry; an
+ * intention with no cue is a wish. Joined, they are a decision already made,
+ * so the moment itself needs no deciding.
+ */
+export const THRESHOLDS = {
+  heading: "At the edges",
+  /** On the today screen, under the heading. One line, no lecture. */
+  standingLine: "Decided in advance, so the moment needs no deciding.",
+  emptyState:
+    "Nothing named yet. An edge is a moment between things — before starting, waiting, after finishing.",
+  emptyStateLink: "Name one",
+
+  editHeading: "At the edges",
+  cueLabel: "When",
+  cuePlaceholder: "After I turn the shower on",
+  intentionLabel: "Then",
+  intentionPlaceholder: "the phone stays in the other room",
+  addButton: "Add an edge",
+  saveButton: "Save",
+  savedIndicator: "saved",
+  removeButton: "Remove",
+  backLink: "Back to today",
+} as const;
+
+/* ------------------------------------------------------------------ *
  * The day line (spec 5.6)
  * ------------------------------------------------------------------ */
 
@@ -292,6 +327,7 @@ export const UI = {
   listScreenLink: "List",
   signOut: "Sign out",
   accountLink: "Account",
+  thresholdsLink: "Edges",
 } as const;
 
 /**

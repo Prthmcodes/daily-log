@@ -638,3 +638,50 @@ number and the sentence about it sit on one line rather than the label floating
 somewhere beside it.
 
 None of this adds a request, a dependency, or a frame of animation.
+
+## Chunk 16 — The threshold plan
+
+Asked to read *Atomic Habits* and make the app "neurologically designed". The
+book was read; three things came out of it.
+
+**The book recommends the opposite of rule 1.** Chapter 16's summary says, in
+as many words: *"Don't break the chain. Try to keep your habit streak alive."*
+That is the mechanism this app was built to avoid, for the reason the brief
+gives — one bad day resets a streak, and four previous attempts died exactly
+there. The book is written for a general reader; the brief was written for
+someone who has already failed at streaks. The brief wins, and this note exists
+so the question does not get reopened from memory.
+
+**"Never miss twice" is already the reframe banner** (chapter 16), and the
+all-or-nothing cycle is named in the book as a pitfall — the app agrees with
+the book here, against the book's own tooling advice.
+
+**Goodhart's Law argues against counters.** Page 167: *"When a measure becomes
+a target, it ceases to be a good measure."* That is the case against priority
+labels on the morning list, and it is a live warning about the study-block
+counter added in Chunk 15.
+
+**What the app was actually missing** is chapters 5 and 6 — implementation
+intentions and cue design. Everything else here records what happened *after*
+the urge. Nothing acted on the cue. The brief already contains the sharper
+version: the urge is a threshold phenomenon, it lives at transitions, and every
+problem slot named is a transition. So thresholds are implementation intentions
+pointed at that diagnosis rather than at habits in general.
+
+**Standing rather than daily, and that is the whole design.** There is no
+`date` column. The edges are the same edges every day, so this is written once
+and revised over months. A plan rewritten each morning is a plan you stop
+rewriting, and it would have eaten the morning list's minute. It costs nothing
+against either ritual because it is read, not filled in.
+
+**Editing is allowed here, unlike on the morning list.** A task is a decision
+for one day and retyping it tomorrow is the point; an edge is a standing
+decision about a recurring moment and is meant to be sharpened.
+
+**Its own table, with no connection to `days`** — the fourth table with that
+property. Naming an edge cannot log a day or move an average. Proved: three
+edges written, `days` still empty.
+
+**The read-only card is a server component,** like the banner and the protocol.
+It is the part you want on screen at the moment the urge arrives, and that
+moment does not wait for a JavaScript bundle.

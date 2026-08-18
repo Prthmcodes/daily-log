@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { Protocol } from "@/components/protocol";
 import { ReframeBanner } from "@/components/reframe-banner";
+import { ThresholdList } from "@/components/threshold-list";
 import { TodayScreen } from "@/components/today-screen";
 import { UI } from "@/lib/copy";
 import { createClient } from "@/lib/supabase/server";
@@ -39,9 +40,18 @@ export default async function TodayPage() {
 
       <TodayScreen userId={user.id} />
 
+      <ThresholdList />
+
       <Protocol />
 
       <div className="mt-4 flex items-center gap-4">
+        <Link
+          href="/thresholds"
+          className="inline-flex min-h-11 items-center text-sm text-muted hover:text-ink"
+        >
+          {UI.thresholdsLink}
+        </Link>
+
         <Link
           href="/account"
           className="inline-flex min-h-11 items-center text-sm text-muted hover:text-ink"

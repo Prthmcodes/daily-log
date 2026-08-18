@@ -113,3 +113,35 @@ create index extras_user_date_idx on public.extras (user_id, date desc);
 create trigger extras_set_updated_at
   before update on public.extras
   for each row execute function public.set_updated_at();
+
+-- What happens at the edges.
+--
+-- The urge is a threshold phenomenon: it turns up at transitions — before
+-- starting, between things, waiting — and dissolves once you are inside a task.
+-- The rest of the app records what happened. This is the only part that acts
+-- on the cue instead.
+--
+-- Standing, not daily. There is no `date` column, because the edges are the
+-- same edges every day. `cue` rather than `trigger` because TRIGGER is a
+-- reserved word in Postgres.
+create table public.thresholds (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  cue        text not null,
+  intention  text not null,
+  position   int not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.thresholds enable row level security;
+
+create policy "own rows" on public.thresholds
+  for all using ((select auth.uid()) = user_id)
+  with check ((select auth.uid()) = user_id);
+
+create index thresholds_user_position_idx on public.thresholds (user_id, position);
+
+create trigger thresholds_set_updated_at
+  before update on public.thresholds
+  for each row execute function public.set_updated_at();
