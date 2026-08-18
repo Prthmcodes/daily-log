@@ -25,10 +25,26 @@ import {
  * either. That is design rule 10, kept by making the alternative unavailable
  * rather than by remembering not to.
  */
+
+/** The hour, in local time, from which a shutdown is offered. */
+const EVENING_FROM_HOUR = 17;
+
 export function useList(userId: string) {
   const [todayK, setTodayK] = useState<DateKey | null>(null);
   const [selectedKey, setSelectedKey] = useState<DateKey | null>(null);
   const [tasks, setTasks] = useState<TaskRow[]>([]);
+
+  /**
+   * Is it late enough for a shutdown to make sense?
+   *
+   * A shutdown ritual belongs to the end of a day. Showing it beside a list
+   * you wrote four minutes ago would put five "move to work" buttons in the
+   * middle of a ritual with a one-minute budget.
+   *
+   * Read once, when the screen loads, so leaving the tab open across the hour
+   * will not make it appear on its own. Reopening the app does.
+   */
+  const [isEvening, setIsEvening] = useState(false);
 
   const [busy, setBusy] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -47,6 +63,8 @@ export function useList(userId: string) {
         setTasks(rows);
         setTodayK(key);
         setSelectedKey(start);
+        // Local hours, like every other time decision in this app.
+        setIsEvening(new Date().getHours() >= EVENING_FROM_HOUR);
       } catch {
         setLoadFailed(true);
       }
@@ -162,6 +180,7 @@ export function useList(userId: string) {
     todayK,
     selectedKey,
     tasks,
+    isEvening,
     busy,
     loadFailed,
     saveFailed,

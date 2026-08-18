@@ -180,6 +180,39 @@ export const EXTRAS = {
 } as const;
 
 /* ------------------------------------------------------------------ *
+ * The shutdown ritual
+ * ------------------------------------------------------------------ */
+
+/**
+ * Ending the working day on purpose.
+ *
+ * Cal Newport's algorithm, in Deep Work: every incomplete thing is reviewed,
+ * and each one either has a plan you trust or is captured somewhere it will be
+ * revisited. Then a set phrase, which he is candid about sounding cheesy and
+ * which works anyway — it is a cue that it is safe to stop thinking about work.
+ *
+ * The work board is the "somewhere it will be revisited", which is what makes
+ * this cheap to add.
+ *
+ * Note what it does NOT do: it does not tick anything, does not roll anything
+ * over to tomorrow's list, and does not count what is left. An unticked task
+ * stays unticked, because that is an honest record of the day. Moving one to
+ * the board copies it forward as a deliberate decision rather than an
+ * inherited debt.
+ */
+export const SHUTDOWN = {
+  heading: "Shut down",
+  intro:
+    "Anything still open either moves to the board or gets let go. Then you are done.",
+  moveButton: "Move to work",
+  movedIndicator: "on the board",
+  nothingOpen: "Nothing left open.",
+  completeButton: "Shutdown complete",
+  completePhrase:
+    "Shutdown complete. None of it needs you again until tomorrow.",
+} as const;
+
+/* ------------------------------------------------------------------ *
  * The work board
  * ------------------------------------------------------------------ */
 

@@ -4,6 +4,7 @@ import { AddTask } from "@/components/add-task";
 import { ComposeList } from "@/components/compose-list";
 import { DateBar } from "@/components/date-bar";
 import { ScreenNav } from "@/components/screen-nav";
+import { Shutdown } from "@/components/shutdown";
 import { TaskRow } from "@/components/task-row";
 import { MORNING_LIST, UI } from "@/lib/copy";
 import { useList } from "@/lib/use-list";
@@ -80,6 +81,17 @@ export function ListScreen({ userId }: Props) {
           </p>
         )}
       </section>
+
+      {/*
+        Only in the evening, only on today, and only when there is a list to
+        close down. A shutdown offered beside a list written four minutes ago
+        would be noise in the middle of the morning's minute.
+      */}
+      {list.isEvening &&
+        list.selectedKey === list.todayK &&
+        list.tasks.length > 0 && (
+          <Shutdown userId={userId} tasks={list.tasks} />
+        )}
     </>
   );
 }

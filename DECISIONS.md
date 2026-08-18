@@ -726,3 +726,53 @@ very sentence that stops the board becoming a scoreboard. Digits and percent
 signs are already banned outright, so the pattern is now "out of". The same
 over-broad guard was quietly sitting in the morning-list test, passing only
 because no string there happens to contain "of"; both are fixed.
+
+## Chunk 18 — The shutdown ritual
+
+Five more books were read: *Deep Work*, *Stolen Focus*, *The Power of Habit*,
+*The One Thing*. *Flow* could not be read — that PDF is scanned images with no
+extractable text, and nothing here is based on it.
+
+**Stolen Focus argues this whole app might be a mistake, and the argument is
+worth keeping.** Hari, relaying Ronald Purser on Lauren Berlant's "cruel
+optimism": taking a problem with deep cultural causes and offering "in upbeat
+language, a simplistic individual solution… cruel, because the solution you are
+offering is so limited, and so blind to the deeper causes, that for most
+people, it will fail." A personal attention tracker is the archetype of what he
+is attacking. The defence is that the brief already built in the antidotes
+without naming them — no streaks, neutral low scores, "Zero is data, not a
+verdict", "Some days the list was wrong, not you". Where the app remains
+exposed: everything in it is self-report, and only the threshold plan touches
+the environment at all. Worth remembering before adding anything that measures
+the user harder.
+
+**The One Thing is a direct criticism of the work board built an hour earlier.**
+Keller's focusing question — "What's the ONE Thing I can do such that by doing
+it everything else will be easier or unnecessary?" — rests on the argument that
+a ranked list is still a list, and ranking is how people avoid choosing. The
+board stands, but this is the counterweight if it starts feeling like a place
+to put things instead of do them.
+
+**Deep Work named a real gap, and this chunk fills it.** Newport's shutdown
+ritual: review everything incomplete, and for each either have a plan you trust
+or capture it somewhere it will be revisited; then say a set phrase. The app had
+a morning ritual and an evening log but nothing that *ended* the day — and
+falling asleep is one of the four problem slots in the brief. The work board,
+built an hour before, is the "somewhere it will be revisited", which is what
+made this cheap.
+
+**It changes nothing it does not have to.** It does not tick anything, does not
+delete anything, does not roll anything over, and does not count what is left.
+An unticked task stays unticked, because that is an honest record of the day.
+Moving one copies it to the board — a deliberate press, not an inherited debt.
+Verified: after moving two open tasks, the day's five tasks were unchanged, two
+done and three open, tomorrow's list was empty, and no `days` row existed.
+
+**Nothing about the shutdown is persisted.** The closing phrase is a cue, not a
+record. Giving it a database row would turn it into something to be consistent
+about, which is one short step from a streak.
+
+**It only appears after 17:00 local, on today, when there is a list.** Newport's
+own attention-residue argument is against adding places to go; showing five
+"move to work" buttons beside a list written four minutes ago would be noise in
+the middle of the morning's one-minute budget.
