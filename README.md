@@ -12,6 +12,8 @@ npm install
 npm run dev
 ```
 
+`npm run check` runs lint, typecheck and tests.
+
 Then open http://localhost:3000.
 
 ## Layout

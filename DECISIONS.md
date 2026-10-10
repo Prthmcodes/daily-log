@@ -878,3 +878,42 @@ never to point `supabase db push` or `supabase link` at the live project.
 different order.** The live table got `alone`, `let_go` and `hardest` from an
 ALTER TABLE, which appends them after `updated_at`, while `schema.sql` lists
 them before it. This is harmless because the app reads columns by name.
+
+## Chunk 21 — CI
+
+Until now nothing checked the code before it shipped. A push to `main` went
+straight to Vercel, which builds but runs neither the tests nor the linter.
+`.github/workflows/ci.yml` now runs on every push to `main` and every pull
+request.
+
+**Four checks, in order of how fast they fail.** Lint catches React mistakes
+the compiler allows. Typecheck (`tsc --noEmit`, now `npm run typecheck`)
+catches the wrong shape of data reaching a component, and runs as its own
+step so a type error is reported as one rather than buried in build output.
+The tests are where the rules
+in CLAUDE.md are actually enforced — the date keys, the copy that must not
+scold, the fields that must stay text — so a change that breaks one shows up
+as a failed test rather than as a habit quietly eroding. The build comes last
+because it is the slowest and because it is what Vercel will run anyway; a
+build that fails here would have failed there. `npm run check` runs the first
+three locally.
+
+**CI runs Node 24, not 22.** The machine this is written on runs 24 and so
+does Vercel by default. Checking on a different major version would let a
+24-only problem pass CI and fail in production.
+
+**The build uses placeholder Supabase values.** `src/lib/supabase/client.ts`
+throws at import time if either variable is missing, so `next build` cannot
+run without them. CI never talks to the database, so it gets an obviously fake
+URL and key written in the workflow itself, not GitHub secrets. That keeps the
+workflow free of anything worth stealing. Verified locally: with the two
+placeholders set in the shell, the build passes and the client bundle contains
+the placeholder URL and not the real project's.
+
+**The honest limit: a red cross does not stop a deploy.** Vercel deploys every
+push to `main` whether CI passes or not. CI only reports. Making it block would
+need either Vercel's deployment checks wired to this workflow or a habit of
+working on a branch and merging through a pull request; neither is set up. For
+now, the cross on GitHub is the signal to look before the next push.
+
+**No tests were added in this chunk.** CI runs the 108 that already existed.
