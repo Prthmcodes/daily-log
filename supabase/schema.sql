@@ -1,9 +1,10 @@
--- The Daily Log schema as it currently stands.
+-- The Daily Log schema as it currently stands, in one file.
 --
--- This is a record, not a migration chain. It was applied to the live project
--- in three steps; this file is the result, and running it against an empty
--- database would reproduce it exactly. Keep it in step by hand if the schema
--- changes — otherwise the database becomes the only copy of the design.
+-- supabase/migrations/ is the source of truth. This file is the combined
+-- result of those migrations, kept in step by hand so the whole design can be
+-- read in one place. To change the schema, follow "Changing the schema" in
+-- docs/supabase-setup.md. Each migration is pasted into the Supabase SQL
+-- editor once and never re-run.
 
 -- One row per logged day. Its existence IS the record that the day was logged.
 -- There is deliberately no `touched` column: a row exists because the user did

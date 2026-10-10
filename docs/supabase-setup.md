@@ -51,3 +51,27 @@ would replace it, and both settings above would need updating with it.
   "Email link is invalid or has expired", which is correct and not a bug.
 - **Free-tier projects pause after about a week with no traffic.** Daily use
   keeps it awake; a fortnight away means a slow first load.
+
+## 4. Changing the schema
+
+`supabase/migrations/` is the source of truth. The live project was set up by
+hand, so it has no migration history of its own.
+
+1. Add a new file in `supabase/migrations/` named `<UTC timestamp>_<what>.sql`,
+   for example `20261101120000_add_something.sql`.
+2. Paste it into the Supabase SQL editor and run it **once**.
+3. Update `supabase/schema.sql` by hand to match.
+4. Regenerate `src/lib/database.types.ts` with the command written in its
+   header. Set `SUPABASE_ACCESS_TOKEN` in that one terminal session first, as
+   described below; do not run `supabase login`.
+5. If the change is non-obvious, add a line to `DECISIONS.md`.
+
+**Never run `supabase db push` or `supabase link` against the live project.**
+There is no migration history on it, so a push would try to re-create tables
+that already exist.
+
+`supabase gen types` is the only CLI command used here. It is read-only. Give
+it a token through the `SUPABASE_ACCESS_TOKEN` environment variable for that
+one terminal session, not through `supabase login`. The token reaches every
+project on the account, so never put it in `.env.local`, a committed file or a
+screenshot.

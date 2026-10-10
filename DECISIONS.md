@@ -849,3 +849,32 @@ applied — it needs pasting into the Supabase SQL editor once. `schema.sql` has
 been kept in step by hand, as its header asks. Until the migration runs, the
 extras card will fail to save; that is a network-shaped failure and the card
 already says so quietly.
+
+## Chunk 20 — Migrations folder
+
+The schema now lives as `supabase/migrations/`: a baseline and one migration
+per change. `schema.sql` stays, as the combined result kept in step by hand,
+because it is still the easiest place to read the whole design at once.
+
+**A hand-kept schema file had already drifted from reality once.** The Chunk 19
+migration's header said "Applied 2026-08-23" while the live database did not
+have the columns; they were only added by hand on 2026-10-10. A single file
+that is edited to describe the database cannot tell you whether the database
+agrees with it. A folder of dated changes, each run once, at least records what
+was meant to be applied and in what order.
+
+**The baseline is the schema before Chunk 19, not the schema today.** It is
+`schema.sql` as of commit 49a9c1d, with only its header replaced, so that the
+baseline plus the Chunk 19 migration equals the live schema. A baseline that
+already contained the new columns would make the Chunk 19 file describe a
+change that had no "before".
+
+**Nothing was applied.** The live database already has every table and column
+these files describe, and a re-run would at best do nothing and at worst fail
+halfway. Both files say so in their headers, and `docs/supabase-setup.md` says
+never to point `supabase db push` or `supabase link` at the live project.
+
+**`extras` has the same columns in `schema.sql` as in the live table, but in a
+different order.** The live table got `alone`, `let_go` and `hardest` from an
+ALTER TABLE, which appends them after `updated_at`, while `schema.sql` lists
+them before it. This is harmless because the app reads columns by name.
