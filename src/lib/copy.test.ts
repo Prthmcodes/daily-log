@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   DAY_LINE,
+  EXTRAS,
   MARKS,
   MORNING_LIST,
   PROTOCOL,
@@ -166,6 +167,51 @@ describe("the morning list", () => {
       expect(text, `MORNING_LIST.${name}`).not.toMatch(/\d|%/);
       expect(text, `MORNING_LIST.${name}`).not.toMatch(/\bout of\b/);
     }
+  });
+});
+
+describe("also today", () => {
+  it("reads exactly as specified", () => {
+    expect(EXTRAS.alone).toEqual({
+      label: "Ten minutes with nothing",
+      helper: "Walked, sat, waited. No phone, no audio, no book.",
+    });
+    expect(EXTRAS.letGo).toEqual({
+      label: "Let one go",
+      helper: "Felt the pull to correct someone or win, and left it alone.",
+    });
+    expect(EXTRAS.hardestLabel).toBe("The hardest moment today");
+  });
+
+  /**
+   * The card's own rule, and the reason every tick here is worded the way it
+   * is: each one names something that was *done*, never something avoided or
+   * failed at. "No reels or shorts" is the one absence, and it is a fact about
+   * a whole day rather than a count of lapses.
+   */
+  it("never scolds, and asks for no reason or verdict", () => {
+    /*
+     * Narrow on purpose. The first version of this list banned "only" and
+     * caught "Whole blocks only" — the same over-broad-guard mistake the
+     * morning-list test already made once with the bare word "of". A guard
+     * that fires on innocent copy gets loosened in a hurry by whoever hits it,
+     * and a guard nobody trusts is worse than none.
+     */
+    const banned = /\b(fail|failed|failure|bad|wrong|guilty|shame|lazy)\b/i;
+
+    for (const [name, value] of Object.entries(EXTRAS)) {
+      const texts = typeof value === "string" ? [value] : Object.values(value);
+      for (const text of texts) {
+        expect(text, `EXTRAS.${name}`).not.toMatch(banned);
+      }
+    }
+  });
+
+  it("asks the hardest line for a when, not a why", () => {
+    // A "why" invites a verdict on yourself. A "when" is the only part of it
+    // that an edge can ever be built from.
+    expect(EXTRAS.hardestPlaceholder).toContain("When");
+    expect(EXTRAS.hardestPlaceholder).toContain("Not why");
   });
 });
 

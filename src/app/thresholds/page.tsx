@@ -12,7 +12,24 @@ import { createClient } from "@/lib/supabase/server";
  * and revise occasionally, and putting it on the today screen would add
  * minutes to a ritual with a ninety-second budget.
  */
-export default async function ThresholdsPage() {
+export default async function ThresholdsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  /*
+   * `?cue=` arrives from the hardest-moment line on the today screen. It is
+   * only ever a starting value for the box — nothing is written until the add
+   * button is pressed, so a link someone pasted cannot create anything.
+   *
+   * In this version of Next.js `searchParams` is a promise and has to be
+   * awaited. Reading it here rather than with a hook in the browser keeps the
+   * editor's opening state on the server, where the rest of this page already
+   * is. A repeated parameter arrives as an array; take the first.
+   */
+  const cue = (await searchParams).cue;
+  const initialCue = Array.isArray(cue) ? cue[0] : cue;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -30,7 +47,7 @@ export default async function ThresholdsPage() {
       <section className="rounded-[var(--radius-card)] border-[0.5px] border-line bg-card px-4 py-[18px]">
         <p className="mb-4 text-sm text-muted">{THRESHOLDS.emptyState}</p>
 
-        <ThresholdEditor userId={user.id} />
+        <ThresholdEditor userId={user.id} initialCue={initialCue ?? ""} />
       </section>
 
       <Link

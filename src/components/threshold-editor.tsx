@@ -16,6 +16,11 @@ import {
 
 type Props = {
   userId: string;
+  /**
+   * A cue carried over from the today screen's hardest-moment line, or an
+   * empty string. Only ever the box's opening text — see the page above.
+   */
+  initialCue: string;
 };
 
 const FIELD =
@@ -33,13 +38,18 @@ const FIELD =
  * hurry here, nothing is being logged, and a Save button per row would be four
  * buttons on a screen that needs none.
  */
-export function ThresholdEditor({ userId }: Props) {
+export function ThresholdEditor({ userId, initialCue }: Props) {
   const [thresholds, setThresholds] = useState<ThresholdRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const [newCue, setNewCue] = useState("");
+  /*
+   * `useState` takes a starting value, not a live one: this reads `initialCue`
+   * once when the component is first built and ignores it afterwards, which is
+   * what lets you edit and clear the box normally.
+   */
+  const [newCue, setNewCue] = useState(initialCue);
   const [newIntention, setNewIntention] = useState("");
 
   useEffect(() => {

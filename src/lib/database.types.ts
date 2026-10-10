@@ -81,6 +81,9 @@ export type Database = {
           created_at: string;
           date: string;
           id: string;
+          alone: boolean;
+          hardest: string;
+          let_go: boolean;
           no_reels: boolean;
           read_something: boolean;
           study_blocks: number;
@@ -91,6 +94,9 @@ export type Database = {
           created_at?: string;
           date: string;
           id?: string;
+          alone?: boolean;
+          hardest?: string;
+          let_go?: boolean;
           no_reels?: boolean;
           read_something?: boolean;
           study_blocks?: number;
@@ -101,6 +107,9 @@ export type Database = {
           created_at?: string;
           date?: string;
           id?: string;
+          alone?: boolean;
+          hardest?: string;
+          let_go?: boolean;
           no_reels?: boolean;
           read_something?: boolean;
           study_blocks?: number;

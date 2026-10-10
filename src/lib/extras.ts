@@ -24,14 +24,23 @@ type Client = SupabaseClient<Database>;
 export type Extras = {
   noReels: boolean;
   readSomething: boolean;
+  /** Ten minutes with nothing running. A capacity, not a rule. */
+  alone: boolean;
+  /** Felt the pull to correct or win, and left it alone. */
+  letGo: boolean;
   studyBlocks: number;
+  /** One line on where the day was hardest. Never scored, never counted. */
+  hardest: string;
 };
 
 /** A day nobody has touched. */
 export const NO_EXTRAS: Extras = {
   noReels: false,
   readSomething: false,
+  alone: false,
+  letGo: false,
   studyBlocks: 0,
+  hardest: "",
 };
 
 /** Pull the three values out of a row, or the empty state if there is none. */
@@ -41,7 +50,10 @@ export function extrasOf(row: ExtrasRow | null): Extras {
   return {
     noReels: row.no_reels,
     readSomething: row.read_something,
+    alone: row.alone,
+    letGo: row.let_go,
     studyBlocks: row.study_blocks,
+    hardest: row.hardest,
   };
 }
 
@@ -90,7 +102,10 @@ export async function saveExtras(
       date: dateKey,
       no_reels: extras.noReels,
       read_something: extras.readSomething,
+      alone: extras.alone,
+      let_go: extras.letGo,
       study_blocks: extras.studyBlocks,
+      hardest: extras.hardest,
     },
     { onConflict: "user_id,date" },
   );

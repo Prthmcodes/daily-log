@@ -173,10 +173,51 @@ export const EXTRAS = {
     label: "Read a few pages",
     helper: "Paper or screen. Two pages counts.",
   },
+  /**
+   * Time alone with nothing running.
+   *
+   * Phrased as an amount rather than an absence — "ten minutes with nothing"
+   * rather than "no phone on the train" — because the thing being built is a
+   * capacity, and a capacity is easier to add to than a rule is to keep. Ten
+   * because the number has to be small enough to be true on a bad day, and a
+   * walk counts because sitting still is the hardest version and nobody should
+   * start there.
+   */
+  alone: {
+    label: "Ten minutes with nothing",
+    helper: "Walked, sat, waited. No phone, no audio, no book.",
+  },
+  /**
+   * Restraint, made visible.
+   *
+   * The urge to correct someone or win a conversation is only ever noticed on
+   * the days it wins. This is the other half of the record. Phrased as a thing
+   * done, not a thing avoided — the same rule as every other tick here — and
+   * unticked means unticked, not failed.
+   */
+  letGo: {
+    label: "Let one go",
+    helper: "Felt the pull to correct someone or win, and left it alone.",
+  },
   studyLabel: "25-minute blocks",
   studyHelper: "Whole blocks only. A half-finished one isn't a block.",
   addBlock: "Add a block",
   removeBlock: "Remove a block",
+
+  /**
+   * One line on where the day was hardest.
+   *
+   * Everything else on this screen records what was done. This records where
+   * the pressure was, which is the only thing that can tell you where to put
+   * an edge. Note what it does not ask for: no cause, no blame, no rating. The
+   * placeholder says "when", because a time and a situation are things you can
+   * plan against and a reason is something you can argue with yourself about.
+   */
+  hardestLabel: "The hardest moment today",
+  hardestPlaceholder:
+    "When was it, and what was going on. Not why — just when.",
+  /** Turns the line above into a standing plan. Carries the text as a cue. */
+  hardestToEdge: "Make this an edge",
 } as const;
 
 /* ------------------------------------------------------------------ *

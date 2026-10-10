@@ -11,7 +11,10 @@ function row(overrides: Partial<ExtrasRow>): ExtrasRow {
     date: "2026-08-05",
     no_reels: false,
     read_something: false,
+    alone: false,
+    let_go: false,
     study_blocks: 0,
+    hardest: "",
     created_at: "2026-08-05T12:00:00Z",
     updated_at: "2026-08-05T12:00:00Z",
     ...overrides,
@@ -23,20 +26,47 @@ describe("extrasOf", () => {
     expect(extrasOf(null)).toEqual(NO_EXTRAS);
   });
 
-  it("reads the three values off a row", () => {
+  it("reads every value off a row", () => {
     expect(
-      extrasOf(row({ no_reels: true, read_something: true, study_blocks: 4 })),
-    ).toEqual({ noReels: true, readSomething: true, studyBlocks: 4 });
+      extrasOf(
+        row({
+          no_reels: true,
+          read_something: true,
+          alone: true,
+          let_go: true,
+          study_blocks: 4,
+          hardest: "Six, waiting for the bus.",
+        }),
+      ),
+    ).toEqual({
+      noReels: true,
+      readSomething: true,
+      alone: true,
+      letGo: true,
+      studyBlocks: 4,
+      hardest: "Six, waiting for the bus.",
+    });
   });
 
   it("carries nothing that could become a score", () => {
     // This object must never grow a total, a score or an average. If a future
     // change adds one, this test says so.
     expect(Object.keys(extrasOf(row({}))).sort()).toEqual([
+      "alone",
+      "hardest",
+      "letGo",
       "noReels",
       "readSomething",
       "studyBlocks",
     ]);
+  });
+
+  it("keeps the hardest line as text, never as a rating", () => {
+    // The temptation with a field like this is to score it later — "how bad
+    // was it, 1 to 5" — and a number here would be a second score sitting on
+    // a screen built to have exactly one. It stays a sentence.
+    const value = extrasOf(row({ hardest: "Ten past nine, after dinner." }));
+    expect(typeof value.hardest).toBe("string");
   });
 });
 

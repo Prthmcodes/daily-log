@@ -776,3 +776,76 @@ about, which is one short step from a streak.
 own attention-residue argument is against adding places to go; showing five
 "move to work" buttons beside a list written four minutes ago would be noise in
 the middle of the morning's one-minute budget.
+
+## Chunk 19 — Where the pressure was
+
+Asked to solve seven stated problems in the app: no tolerance for being alone
+with himself, forgetting things, eating and sleeping and talking as escapes,
+compulsively correcting people, needing to win arguments, and poor emotional
+control. Six of the seven are the same behaviour wearing different clothes —
+an uncomfortable inner state, and a door out of it. The app already tracks
+several of the doors. It tracked nothing about the room.
+
+Three columns, one table, no new screens.
+
+**All three go on `extras`, and that placement is the whole safety argument.**
+Putting the hardest-moment line on `days` was the obvious move and it is
+wrong. Writing a note on `days` logs the day, and a day logged with no marks
+ticked is a logged zero that pulls both averages down. Describing the worst
+moment of a bad day would therefore make the bad day count against you — the
+same bug as "reading a book makes your score worse", which is the reason the
+`extras` table exists at all. On `extras` it cannot reach a score, and the
+CLAUDE.md rule about what creates a `days` row needed no amendment. Verified:
+typing in the hardest line and ticking both new marks left `days` empty.
+
+**The hardest line asks for a when, not a why.** A "why" invites a verdict on
+yourself, which is the one thing every screen here is arranged to prevent. A
+"when" is also the only part of the answer an edge can be built from. There is
+a test for both halves of the placeholder.
+
+**It is a sentence and it must stay a sentence.** The obvious next request is
+"how bad was it, one to five", and a rating here would put a second score on a
+screen designed to have exactly one — and a score that climbs when the day
+goes badly, which is the shape rule 4 exists to forbid. There is a test
+asserting the field is text.
+
+**"Make this an edge" is the first path in the app that runs forwards.** Until
+now every table pointed backwards except `thresholds`, which pointed forwards
+and was written from memory days later. The link carries the sentence to
+`/thresholds?cue=` as the box's opening text. Nothing is written by following
+it, so a pasted link cannot create anything, and the text still has to be
+sharpened by hand — a description of a moment is not yet a cue. `searchParams`
+is a promise in this version of Next and is awaited in the page, so the
+editor's opening state is decided on the server like the rest of that route.
+
+**"Let one go" is the one addition I am least sure of, and the Stolen Focus
+note is why.** It measures him on a trait he is already ashamed of, and the
+warning in Chunk 18 was to think hard before adding anything that measures the
+user harder. It goes in anyway for one reason: restraint is currently invisible
+to him. He notices every time the urge to correct someone wins and never once
+notices the times it loses, so his own picture of himself is built from a
+biased sample. The wording follows the card's rule — a thing done, not a thing
+avoided — and unticked means unticked. If it ever starts reading as an
+accusation, delete the column; nothing else depends on it.
+
+**Nothing was added to the score, the grid, the averages or the morning list.**
+Five marks, still five. No count of the new ticks, no history for the hardest
+line, no streak of anything.
+
+**The over-broad test guard happened again.** The new copy test banned the word
+"only" and immediately caught "Whole blocks only" — the identical mistake to
+the bare "of" in Chunk 17. Narrowed to words that can only be scolds. Worth
+noticing that this failure mode has now appeared twice: a guard written to
+protect the tone will fire on innocent copy unless the pattern is kept tight.
+
+**Verified in a Linux container, not on the dev machine.** `node_modules` here
+holds Windows binaries, so the suite cannot run through the folder bridge. The
+source was copied out and installed clean: 108 tests pass, `tsc --noEmit` is
+silent, `eslint src` is silent, and `next build` succeeds with `/thresholds`
+still dynamic.
+
+**The migration is `supabase/migration-2026-08-23.sql`** and has not been
+applied — it needs pasting into the Supabase SQL editor once. `schema.sql` has
+been kept in step by hand, as its header asks. Until the migration runs, the
+extras card will fail to save; that is a network-shaped failure and the card
+already says so quietly.

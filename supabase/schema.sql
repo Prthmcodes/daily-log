@@ -97,6 +97,13 @@ create table public.extras (
   no_reels       boolean not null default false,
   read_something boolean not null default false,
   study_blocks   int not null default 0 check (study_blocks >= 0),
+  -- Added later. All three sit here rather than on `days` for the reason the
+  -- comment above gives: writing one must not log the day. Describing the
+  -- hardest moment of a day you ticked nothing on would otherwise file that
+  -- day as a logged zero and pull the averages down.
+  alone          boolean not null default false,
+  let_go         boolean not null default false,
+  hardest        text    not null default '',
   created_at     timestamptz not null default now(),
   updated_at     timestamptz not null default now(),
   unique (user_id, date)
